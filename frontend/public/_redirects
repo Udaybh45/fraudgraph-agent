@@ -1,2 +1,2 @@
-/api/*  https://fraudgraph-backend-abc1.onrender.com/api/:splat  200
+/api/*  https://fraudgraph-agent.onrender.com/api/:splat  200
 /*      /index.html  200
