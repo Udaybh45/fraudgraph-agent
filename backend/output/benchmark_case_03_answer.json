@@ -1,0 +1,571 @@
+{
+  "Case": {
+    "benchmark_id": "BENCHMARK-CASE-03",
+    "case_id": "CASE-1790249027-F539",
+    "transaction_id": "TXN-BM-1003",
+    "title": "Scenario 3: Suspicious Graph Context with Insufficient Evidence (No Automatic Block)",
+    "trigger_reason": "Customer Travel Anomaly - New Subnet & Off-Baseline Spend",
+    "expected_scenario": "Scenario 3: Suspicious graph relationships but insufficient evidence -> agent gathers more evidence -> determines appropriate action without automatically blocking"
+  },
+  "Investigation record": {
+    "started_at": "2026-09-24T11:23:47Z",
+    "completed_at": "2026-09-24T11:23:47Z",
+    "execution_time_ms": 0,
+    "steps_executed": 16,
+    "timeline": [
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "TRIGGER",
+        "description": "Received investigation trigger: 'Customer Travel Anomaly - New Subnet & Off-Baseline Spend' for Transaction TXN-BM-1003",
+        "data": null
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "CREATE_CASE",
+        "description": "Opened new fraud investigation case: CASE-1790249027-F539",
+        "data": {
+          "id": "CASE-1790249027-F539",
+          "case_number": "CASE-1790249027-F539",
+          "status": "OPEN",
+          "trigger_reason": "Customer Travel Anomaly - New Subnet & Off-Baseline Spend",
+          "created_at": "2026-09-24T11:23:47Z",
+          "closed_at": null,
+          "final_risk_score": 0.0,
+          "confidence_score": 0.0,
+          "outcome": "PENDING",
+          "_type": "FraudCase"
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "INVESTIGATE",
+        "description": "Retrieved transactional context: Amount=$340.00",
+        "data": {
+          "transaction_id": "TXN-BM-1003",
+          "found": true,
+          "amount": 340.0,
+          "timestamp": "2026-08-13T14:32:00Z",
+          "product_code": "W",
+          "channel": "ONLINE",
+          "anomaly_score": 0.48,
+          "device": {
+            "id": "DEV-MAC-03",
+            "fingerprint": "fp_mac_4091a",
+            "device_type": "DESKTOP",
+            "os": "macOS Sonoma 14",
+            "browser": "Chrome 124",
+            "is_emulator": false,
+            "shared_user_count": 1,
+            "_type": "Device"
+          },
+          "ip": {
+            "id": "IP-HOTEL-03",
+            "ip_address": "172.56.21.99",
+            "country": "US",
+            "is_vpn": false,
+            "is_tor": false,
+            "risk_score": 0.25,
+            "_type": "IP"
+          },
+          "merchant": {
+            "id": "MERCH-TRAVEL-03",
+            "name": "Grand Hyatt Regency",
+            "category": "Hospitality & Lodging",
+            "risk_tier": "LOW",
+            "_type": "Merchant"
+          },
+          "account": {
+            "id": "ACC-1003",
+            "account_number": "4000-XXXX-XXXX-1190",
+            "balance": 8900.0,
+            "status": "ACTIVE",
+            "_type": "Account"
+          }
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "GATHER_GRAPH_EVIDENCE",
+        "description": "Executed GSQL query trace_device_sharing on Device DEV-MAC-03: 1 linked customers.",
+        "data": {
+          "device": {
+            "id": "DEV-MAC-03",
+            "fingerprint": "fp_mac_4091a",
+            "device_type": "DESKTOP",
+            "os": "macOS Sonoma 14",
+            "browser": "Chrome 124",
+            "is_emulator": false,
+            "shared_user_count": 1,
+            "_type": "Device"
+          },
+          "distinct_customers": 1,
+          "customers": [
+            {
+              "id": "CUST-1003",
+              "name": "David Chen",
+              "risk_score": 0.15,
+              "kyc_status": "VERIFIED",
+              "total_transactions": 14,
+              "chargeback_count": 0,
+              "_type": "Customer"
+            }
+          ],
+          "transactions": [
+            {
+              "id": "TXN-BM-1003",
+              "amount": 340.0,
+              "timestamp": "2026-08-13T14:32:00Z",
+              "epoch_seconds": 1737546720,
+              "currency": "USD",
+              "channel": "ONLINE",
+              "product_code": "W",
+              "anomaly_score": 0.48,
+              "is_risky": false,
+              "_type": "Transaction"
+            }
+          ],
+          "is_device_farm": false
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "GATHER_GRAPH_EVIDENCE",
+        "description": "Executed GSQL query trace_ip_cluster on IP IP-HOTEL-03: 1 connected accounts.",
+        "data": {
+          "ip": {
+            "id": "IP-HOTEL-03",
+            "ip_address": "172.56.21.99",
+            "country": "US",
+            "is_vpn": false,
+            "is_tor": false,
+            "risk_score": 0.25,
+            "_type": "IP"
+          },
+          "txn_count": 1,
+          "customer_count": 1,
+          "total_volume": 340.0,
+          "customers": [
+            {
+              "id": "CUST-1003",
+              "name": "David Chen",
+              "risk_score": 0.15,
+              "kyc_status": "VERIFIED",
+              "total_transactions": 14,
+              "chargeback_count": 0,
+              "_type": "Customer"
+            }
+          ],
+          "transactions": [
+            {
+              "id": "TXN-BM-1003",
+              "amount": 340.0,
+              "timestamp": "2026-08-13T14:32:00Z",
+              "epoch_seconds": 1737546720,
+              "currency": "USD",
+              "channel": "ONLINE",
+              "product_code": "W",
+              "anomaly_score": 0.48,
+              "is_risky": false,
+              "_type": "Transaction"
+            }
+          ],
+          "is_proxy_cluster": false
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "RETRIEVE_TRANSACTION_HISTORY",
+        "description": "Checked historical baseline for Customer CUST-1003: Avg spend $340.00",
+        "data": {
+          "customer_id": "CUST-1003",
+          "found": true,
+          "name": "David Chen",
+          "kyc_status": "VERIFIED",
+          "account_count": 1,
+          "total_historical_txns": 1,
+          "total_historical_spend": 340.0,
+          "average_transaction_amount": 340.0,
+          "chargeback_count": 0,
+          "customer_risk_rating": 0.15
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "IDENTIFY_FRAUD_PATTERN",
+        "description": "Graph pattern detection identified: 'Unclassified Anomaly' (0 patterns detected).",
+        "data": {
+          "patterns_detected": [],
+          "primary_pattern": null,
+          "pattern_count": 0
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "RETRIEVE_POLICY_GRAPHRAG",
+        "description": "GraphRAG retrieved 3 governing policies and typology 'Account Takeover (ATO)'",
+        "data": [
+          {
+            "policy_code": "POL-001",
+            "title": "High-Velocity & Off-Hour Volume Spike Policy",
+            "category": "Velocity Controls",
+            "summary": "Mandates automated transaction throttling or step-up authentication when an account exhibits >=3 transactions within 60 minutes or a 300% deviation from 30-day baseline spend.",
+            "threshold_rules": "txn_count >= 3 in 1hr OR amount_deviation >= 3.0",
+            "mandatory_approval": false,
+            "applicable_actions": [
+              "REQUEST_STEP_UP_AUTHENTICATION",
+              "MONITOR_ACCOUNT",
+              "BLOCK_TRANSACTION"
+            ],
+            "regulatory_reference": "FFIEC Retail Payment Systems Handbook \u00a74.2"
+          },
+          {
+            "policy_code": "POL-002",
+            "title": "Device Multi-Accounting & Farm Fingerprint Policy",
+            "category": "Device Intelligence",
+            "summary": "Any hardware device fingerprint associated with 3 or more distinct customer profiles or flagged as an emulated virtual machine must be subjected to biometric step-up verification or immediate containment.",
+            "threshold_rules": "distinct_customers >= 3 OR is_emulator == true",
+            "mandatory_approval": false,
+            "applicable_actions": [
+              "BLOCK_TRANSACTION",
+              "WARN_CUSTOMER",
+              "REQUEST_STEP_UP_AUTHENTICATION"
+            ],
+            "regulatory_reference": "NIST SP 800-63B Authenticator Assurance Level 2 (AAL2)"
+          },
+          {
+            "policy_code": "POL-003",
+            "title": "Money Mule Pass-Through Network Policy",
+            "category": "Anti-Money Laundering (AML)",
+            "summary": "Accounts participating in rapid pass-through funds routing (hop count >= 3 within 24 hours of receipt) require immediate temporary debit freeze and mandatory escalation to Fraud / AML operations.",
+            "threshold_rules": "mule_hops >= 3 AND holding_period_hours < 24",
+            "mandatory_approval": true,
+            "applicable_actions": [
+              "BLOCK_TRANSACTION",
+              "ESCALATE_TO_FRAUD_ANALYST",
+              "FILE_REGULATORY_REPORT"
+            ],
+            "regulatory_reference": "FinCEN Advisory FIN-2020-A003 on Money Mules"
+          }
+        ]
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "RETRIEVE_SIMILAR_CASES",
+        "description": "Retrieved 3 structurally similar historical cases from case memory.",
+        "data": [
+          {
+            "case_id": "HIST-CASE-103",
+            "case_number": "HIST-CASE-103",
+            "transaction_id": "TXN-HIST-003",
+            "day_offset": 58,
+            "trigger_reason": "High-Value Transaction off-baseline",
+            "amount": 620.0,
+            "fraud_pattern": "Account Takeover",
+            "final_risk_score": 0.22,
+            "confidence_score": 0.88,
+            "uncertainty_score": 0.12,
+            "action": "ALLOW_TRANSACTION",
+            "actions": [
+              "ALLOW_TRANSACTION"
+            ],
+            "outcome": "BENIGN_CUSTOMER_ACTIVITY",
+            "final_resolution": "BENIGN_CUSTOMER_ACTIVITY",
+            "entities": {
+              "customer_id": "CUST-H103",
+              "account_id": "ACC-H103",
+              "device_id": "DEV-MOBILE-103",
+              "ip_address": "73.189.44.12",
+              "is_emulator": false,
+              "is_vpn": false
+            },
+            "id": "HIST-CASE-103",
+            "_type": "FraudCase",
+            "similarity_score": 0.56,
+            "similarity_pct": 56,
+            "relevance_explanation": "Historical outcome was BENIGN_CUSTOMER_ACTIVITY with action 'ALLOW_TRANSACTION'"
+          },
+          {
+            "case_id": "HIST-CASE-105",
+            "case_number": "HIST-CASE-105",
+            "transaction_id": "TXN-HIST-005",
+            "day_offset": 105,
+            "trigger_reason": "Step-up Challenge Passed - Legitimate Travel",
+            "amount": 950.0,
+            "fraud_pattern": "Account Takeover",
+            "final_risk_score": 0.18,
+            "confidence_score": 0.94,
+            "uncertainty_score": 0.06,
+            "action": "ALLOW_TRANSACTION",
+            "actions": [
+              "ALLOW_TRANSACTION"
+            ],
+            "outcome": "BENIGN_CUSTOMER_ACTIVITY",
+            "final_resolution": "BENIGN_CUSTOMER_ACTIVITY",
+            "entities": {
+              "customer_id": "CUST-H105",
+              "account_id": "ACC-H105",
+              "device_id": "DEV-TABLET-105",
+              "ip_address": "151.101.65.140",
+              "is_emulator": false,
+              "is_vpn": false
+            },
+            "id": "HIST-CASE-105",
+            "_type": "FraudCase",
+            "similarity_score": 0.55,
+            "similarity_pct": 55,
+            "relevance_explanation": "Historical outcome was BENIGN_CUSTOMER_ACTIVITY with action 'ALLOW_TRANSACTION'"
+          },
+          {
+            "id": "CASE-1790249027-EDEC",
+            "case_id": "CASE-1790249027-EDEC",
+            "transaction_id": "TXN-BM-1002",
+            "trigger_reason": "Unrecognized Device with Elevated Behavioral Velocity",
+            "amount": 850.0,
+            "fraud_pattern": "Proxy/VPN Cluster Anomaly",
+            "final_risk_score": 0.44,
+            "confidence_score": 0.66,
+            "uncertainty_score": 0.34,
+            "action": "MONITOR_ACCOUNT",
+            "actions": [
+              "MONITOR_ACCOUNT"
+            ],
+            "outcome": "MONITORED",
+            "final_resolution": "MONITORED",
+            "entities": {
+              "device_id": "DEV-UNKNOWN-02",
+              "is_emulator": false,
+              "ip_address": "104.28.192.4",
+              "is_vpn": true
+            },
+            "closed_at": "2026-09-24T11:23:47Z",
+            "status": "CLOSED",
+            "_type": "FraudCase",
+            "similarity_score": 0.42,
+            "similarity_pct": 42,
+            "relevance_explanation": "Historical outcome was MONITORED with action 'MONITOR_ACCOUNT'"
+          }
+        ]
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "ASSESS_UNCERTAINTY",
+        "description": "Risk Level: LOW (Score: 0.21) | Confidence: 0.77 | Uncertainty: 0.23 | Additional Evidence Required: False",
+        "data": {
+          "risk_score": 0.21,
+          "risk_level": "LOW",
+          "confidence_score": 0.77,
+          "uncertainty_score": 0.23,
+          "breakdown": {
+            "graph_support_pct": 10.0,
+            "historical_support_pct": 0.0,
+            "signal_strength_pct": 48.0,
+            "evidence_coverage_pct": 50.0
+          },
+          "evidence_count": 2,
+          "supporting_evidence": [
+            {
+              "description": "Customer transactional baseline verified",
+              "polarity": "SUPPORTING",
+              "source_tool": "search_customer_history"
+            },
+            {
+              "description": "Enforces policy POL-001",
+              "polarity": "SUPPORTING",
+              "source_tool": "retrieve_fraud_policy"
+            }
+          ],
+          "contradicting_evidence": [],
+          "missing_evidence": [
+            "Device hardware fingerprint linkage verification",
+            "Geographic IP geolocation & proxy traversal",
+            "Out-of-band Step-Up MFA / Biometric verification"
+          ],
+          "investigation_status": "ACTIONABLE",
+          "additional_evidence_required": false,
+          "is_defensible": true
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "DETERMINE_NEXT_BEST_ACTION",
+        "description": "Recommended Next Best Action: ALLOW_TRANSACTION (Allow Transaction)",
+        "data": {
+          "action": "ALLOW_TRANSACTION",
+          "action_display": "Allow Transaction",
+          "reason": "Transaction conforms to historical customer baseline, verified hardware fingerprint, and non-suspicious IP routing. Risk (0.21) well below thresholds.",
+          "evidence": [
+            "Clean device fingerprint",
+            "Trusted IP subnet"
+          ],
+          "confidence": 0.77,
+          "risk": 0.21,
+          "required_approval": "AUTOMATED_EXECUTION",
+          "approval_display": "Automated Instant Clearance",
+          "policy_reference": "POL-001 (Standard Transaction Clearance)",
+          "remaining_uncertainty": 0.23,
+          "is_sensitive": false
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "CHECK_POLICY_PERMISSION",
+        "description": "Policy check completed. Requires approval: False (Tier: AUTOMATED_EXECUTION)",
+        "data": {
+          "action": "ALLOW_TRANSACTION",
+          "amount": 340.0,
+          "requires_approval": false,
+          "approval_tier": "AUTOMATED_EXECUTION",
+          "governing_policy": "POL-001",
+          "permitted_to_auto_execute": true
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "EXECUTE_ACTION",
+        "description": "Executed action: ALLOW_TRANSACTION",
+        "data": {
+          "id": "ACT-1790249027-8583",
+          "action_type": "ALLOW_TRANSACTION",
+          "reason": "Transaction conforms to historical customer baseline, verified hardware fingerprint, and non-suspicious IP routing. Risk (0.21) well below thresholds.",
+          "approval_tier": "AUTOMATED_EXECUTION",
+          "executed_by": "FraudGraph_Autonomous_Agent",
+          "executed_at": "2026-09-24T11:23:47Z",
+          "status": "COMPLETED",
+          "policy_reference": "POL-001",
+          "_type": "Action"
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "EXPLAIN_DECISION",
+        "description": "Generated 8-question structured explainability rationale.",
+        "data": {
+          "what_did_the_agent_find": "Standard transaction profile with minor deviations from historical spend (Identified Typology: Unclassified Anomaly).",
+          "why_is_this_suspicious": "Subtle behavioral deviations warrant caution but lack confirmed fraudulent intent.",
+          "what_evidence_is_missing": "Device hardware fingerprint linkage verification; Geographic IP geolocation & proxy traversal; Out-of-band Step-Up MFA / Biometric verification",
+          "why_was_additional_evidence_requested": "Initial evidence and historical case precedents provided sufficient confidence to act defensibly without requiring additional verification.",
+          "why_was_this_action_selected": "The action 'Allow Transaction' was selected because it maximizes loss prevention while minimizing false-positive friction. Final risk score is 0.21 with 77% confidence.",
+          "what_policy_supports_this_action": "POL-001 (Standard Transaction Clearance). Threshold criteria and category governance verified against GraphRAG repository.",
+          "what_approval_is_required": "Automated Instant Clearance. Permitted for immediate automated execution without human bottleneck.",
+          "what_uncertainty_remains": "Remaining decision uncertainty is 23.0%. Ongoing behavioral monitoring is established to mitigate residual risk."
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "UPDATE_CASE_MEMORY",
+        "description": "Persisted case outcome (ALLOWED) into TigerGraph case memory.",
+        "data": {
+          "id": "CASE-1790249027-F539",
+          "case_id": "CASE-1790249027-F539",
+          "transaction_id": "TXN-BM-1003",
+          "trigger_reason": "Customer Travel Anomaly - New Subnet & Off-Baseline Spend",
+          "amount": 340.0,
+          "fraud_pattern": "Unclassified Anomaly",
+          "final_risk_score": 0.21,
+          "confidence_score": 0.77,
+          "uncertainty_score": 0.23,
+          "action": "ALLOW_TRANSACTION",
+          "actions": [
+            "ALLOW_TRANSACTION"
+          ],
+          "outcome": "ALLOWED",
+          "final_resolution": "ALLOWED",
+          "entities": {
+            "device_id": "DEV-MAC-03",
+            "is_emulator": false,
+            "ip_address": "172.56.21.99",
+            "is_vpn": false
+          },
+          "closed_at": "2026-09-24T11:23:47Z",
+          "status": "CLOSED",
+          "_type": "FraudCase"
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "CLOSE_OR_ESCALATE",
+        "description": "Case investigation concluded in 0ms with outcome: ALLOWED.",
+        "data": null
+      }
+    ]
+  },
+  "Evidence": [
+    {
+      "description": "Customer transactional baseline verified",
+      "polarity": "SUPPORTING",
+      "source_tool": "search_customer_history"
+    },
+    {
+      "description": "Enforces policy POL-001",
+      "polarity": "SUPPORTING",
+      "source_tool": "retrieve_fraud_policy"
+    }
+  ],
+  "Findings": "Standard transaction profile with minor deviations from historical spend (Identified Typology: Unclassified Anomaly).",
+  "Fraud pattern": "Unclassified Anomaly",
+  "Risk": 0.21,
+  "Confidence": 0.77,
+  "Decisions": {
+    "pre_evidence_action": "ALLOW_TRANSACTION",
+    "additional_evidence_dispatched": false,
+    "final_recommended_action": "ALLOW_TRANSACTION",
+    "status": "RESOLVED"
+  },
+  "Actions": [
+    "ALLOW_TRANSACTION"
+  ],
+  "Required approval": "AUTOMATED_EXECUTION",
+  "Next Best Action before additional evidence": {
+    "action": "ALLOW_TRANSACTION",
+    "action_display": "Allow Transaction",
+    "reason": "Transaction conforms to historical customer baseline, verified hardware fingerprint, and non-suspicious IP routing. Risk (0.21) well below thresholds.",
+    "evidence": [
+      "Clean device fingerprint",
+      "Trusted IP subnet"
+    ],
+    "confidence": 0.77,
+    "risk": 0.21,
+    "required_approval": "AUTOMATED_EXECUTION",
+    "approval_display": "Automated Instant Clearance",
+    "policy_reference": "POL-001 (Standard Transaction Clearance)",
+    "remaining_uncertainty": 0.23,
+    "is_sensitive": false
+  },
+  "Additional evidence requested": null,
+  "Result of additional evidence": null,
+  "Updated Next Best Action": {
+    "action": "ALLOW_TRANSACTION",
+    "action_display": "Allow Transaction",
+    "reason": "Transaction conforms to historical customer baseline, verified hardware fingerprint, and non-suspicious IP routing. Risk (0.21) well below thresholds.",
+    "evidence": [
+      "Clean device fingerprint",
+      "Trusted IP subnet"
+    ],
+    "confidence": 0.77,
+    "risk": 0.21,
+    "required_approval": "AUTOMATED_EXECUTION",
+    "approval_display": "Automated Instant Clearance",
+    "policy_reference": "POL-001 (Standard Transaction Clearance)",
+    "remaining_uncertainty": 0.23,
+    "is_sensitive": false
+  },
+  "Final outcome": "ALLOWED",
+  "Case memory entry": {
+    "case_id": "CASE-1790249027-F539",
+    "transaction_id": "TXN-BM-1003",
+    "fraud_pattern": "Unclassified Anomaly",
+    "final_risk_score": 0.21,
+    "confidence_score": 0.77,
+    "resolution": "RESOLVED"
+  },
+  "Explainability": {
+    "what_did_the_agent_find": "Standard transaction profile with minor deviations from historical spend (Identified Typology: Unclassified Anomaly).",
+    "why_is_this_suspicious": "Subtle behavioral deviations warrant caution but lack confirmed fraudulent intent.",
+    "what_evidence_is_missing": "Device hardware fingerprint linkage verification; Geographic IP geolocation & proxy traversal; Out-of-band Step-Up MFA / Biometric verification",
+    "why_was_additional_evidence_requested": "Initial evidence and historical case precedents provided sufficient confidence to act defensibly without requiring additional verification.",
+    "why_was_this_action_selected": "The action 'Allow Transaction' was selected because it maximizes loss prevention while minimizing false-positive friction. Final risk score is 0.21 with 77% confidence.",
+    "what_policy_supports_this_action": "POL-001 (Standard Transaction Clearance). Threshold criteria and category governance verified against GraphRAG repository.",
+    "what_approval_is_required": "Automated Instant Clearance. Permitted for immediate automated execution without human bottleneck.",
+    "what_uncertainty_remains": "Remaining decision uncertainty is 23.0%. Ongoing behavioral monitoring is established to mitigate residual risk."
+  }
+}

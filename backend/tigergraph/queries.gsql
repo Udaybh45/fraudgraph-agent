@@ -1,0 +1,118 @@
+// TigerGraph GSQL Query Definitions for FraudGraph Agent
+USE GRAPH FraudGraph;
+
+// 1. Trace Device Sharing: Detect Multi-Accounting / Device Farming
+CREATE OR REPLACE QUERY trace_device_sharing(VERTEX<Device> input_device) FOR GRAPH FraudGraph {
+    OrAccum @is_shared = false;
+    SumAccum<INT> @@distinct_customers = 0;
+    SetAccum<VERTEX<Customer>> @@connected_customers;
+    SetAccum<VERTEX<Transaction>> @@associated_txns;
+
+    Start = { input_device };
+
+    // Hop 1: Transactions using this device
+    Txns = SELECT t FROM Start:s -(uses:e)- Transaction:t
+           ACCUM @@associated_txns += t;
+
+    // Hop 2: Accounts making those transactions
+    Accs = SELECT a FROM Txns:t -(makes:e)- Account:a;
+
+    // Hop 3: Customers owning those accounts
+    Custs = SELECT c FROM Accs:a -(owns:e)- Customer:c
+            ACCUM @@connected_customers += c;
+
+    // Hop 4: Customers directly linked to this device
+    DirectCusts = SELECT c FROM Start:s -(customer_uses_device:e)- Customer:c
+                  ACCUM @@connected_customers += c;
+
+    @@distinct_customers = @@connected_customers.size();
+
+    PRINT input_device, @@distinct_customers, @@connected_customers, @@associated_txns;
+}
+
+// 2. Trace IP Cluster & Proxy Anomaly
+CREATE OR REPLACE QUERY trace_ip_cluster(VERTEX<IP> input_ip) FOR GRAPH FraudGraph {
+    SetAccum<VERTEX<Transaction>> @@txns;
+    SetAccum<VERTEX<Customer>> @@customers;
+    SumAccum<DOUBLE> @@total_volume = 0.0;
+
+    Start = { input_ip };
+
+    Txns = SELECT t FROM Start:s -(originates_from:e)- Transaction:t
+           ACCUM @@txns += t,
+                 @@total_volume += t.amount;
+
+    Accs = SELECT a FROM Txns:t -(makes:e)- Account:a;
+
+    Custs = SELECT c FROM Accs:a -(owns:e)- Customer:c
+            ACCUM @@customers += c;
+
+    PRINT input_ip, @@txns.size() AS txn_count, @@customers.size() AS customer_count, @@total_volume, @@customers;
+}
+
+// 3. Trace Mule Chain & Pass-Through Velocity (Multi-Hop BFS)
+CREATE OR REPLACE QUERY trace_mule_chain(VERTEX<Account> source_account, INT max_hops) FOR GRAPH FraudGraph {
+    MinAccum<INT> @distance = 0;
+    SetAccum<VERTEX<Account>> @@visited_accounts;
+    ListAccum<STRING> @@traversal_path;
+
+    Current = { source_account };
+
+    WHILE (Current.size() > 0 AND max_hops > 0) DO
+        Current = SELECT tgt FROM Current:src -(makes:e)- Transaction:t -(makes:e)- Account:tgt
+                  WHERE tgt != source_account AND NOT @@visited_accounts.contains(tgt)
+                  ACCUM @@visited_accounts += tgt,
+                        tgt.@distance = src.@distance + 1;
+        max_hops = max_hops - 1;
+    END;
+
+    PRINT @@visited_accounts;
+}
+
+// 4. Detect Velocity Burst
+CREATE OR REPLACE QUERY detect_velocity_burst(VERTEX<Account> target_account, INT window_seconds) FOR GRAPH FraudGraph {
+    SumAccum<INT> @@txn_count = 0;
+    SumAccum<DOUBLE> @@txn_amount_sum = 0.0;
+    MaxAccum<INT> @@latest_time = 0;
+
+    Start = { target_account };
+
+    Txns = SELECT t FROM Start:s -(makes:e)- Transaction:t
+           POST-ACCUM @@txn_count += 1,
+                      @@txn_amount_sum += t.amount;
+
+    PRINT target_account, @@txn_count, @@txn_amount_sum;
+}
+
+// 5. Calculate Graph Risk Metrics for a Target Transaction
+CREATE OR REPLACE QUERY calculate_graph_risk_metrics(VERTEX<Transaction> target_txn) FOR GRAPH FraudGraph {
+    SumAccum<DOUBLE> @@graph_risk_score = 0.0;
+    SumAccum<INT> @@shared_device_penalty = 0;
+    SumAccum<INT> @@vpn_penalty = 0;
+
+    Start = { target_txn };
+
+    // Check device connections
+    Devs = SELECT d FROM Start:s -(uses:e)- Device:d
+           ACCUM IF d.is_emulator THEN @@graph_risk_score += 0.4 END;
+
+    // Check IP
+    Ips = SELECT ip FROM Start:s -(originates_from:e)- IP:ip
+          ACCUM IF ip.is_vpn OR ip.is_tor THEN @@graph_risk_score += 0.35 END;
+
+    PRINT target_txn, @@graph_risk_score;
+}
+
+// 6. Find Structurally Similar Fraud Cases
+CREATE OR REPLACE QUERY find_similar_cases(VERTEX<FraudCase> target_case) FOR GRAPH FraudGraph {
+    SetAccum<VERTEX<FraudCase>> @@similar_cases;
+
+    Start = { target_case };
+
+    Cases = SELECT fc FROM Start:s -(similar_to:e)- FraudCase:fc
+            ACCUM @@similar_cases += fc;
+
+    PRINT @@similar_cases;
+}
+
+INSTALL QUERY trace_device_sharing, trace_ip_cluster, trace_mule_chain, detect_velocity_burst, calculate_graph_risk_metrics, find_similar_cases;

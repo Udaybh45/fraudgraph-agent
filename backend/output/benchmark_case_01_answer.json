@@ -1,0 +1,628 @@
+{
+  "Case": {
+    "benchmark_id": "BENCHMARK-CASE-01",
+    "case_id": "CASE-1790249027-B9F7",
+    "transaction_id": "TXN-BM-1001",
+    "title": "Scenario 1: Definite Device Farming Syndicate (Strong Evidence)",
+    "trigger_reason": "Device Hardware Fingerprint Collision & Emulated Environment",
+    "expected_scenario": "Scenario 1: Strong fraud evidence -> agent investigates -> recommends block"
+  },
+  "Investigation record": {
+    "started_at": "2026-09-24T11:23:47Z",
+    "completed_at": "2026-09-24T11:23:47Z",
+    "execution_time_ms": 0,
+    "steps_executed": 16,
+    "timeline": [
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "TRIGGER",
+        "description": "Received investigation trigger: 'Device Hardware Fingerprint Collision & Emulated Environment' for Transaction TXN-BM-1001",
+        "data": null
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "CREATE_CASE",
+        "description": "Opened new fraud investigation case: CASE-1790249027-B9F7",
+        "data": {
+          "id": "CASE-1790249027-B9F7",
+          "case_number": "CASE-1790249027-B9F7",
+          "status": "OPEN",
+          "trigger_reason": "Device Hardware Fingerprint Collision & Emulated Environment",
+          "created_at": "2026-09-24T11:23:47Z",
+          "closed_at": null,
+          "final_risk_score": 0.0,
+          "confidence_score": 0.0,
+          "outcome": "PENDING",
+          "_type": "FraudCase"
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "INVESTIGATE",
+        "description": "Retrieved transactional context: Amount=$2,850.00",
+        "data": {
+          "transaction_id": "TXN-BM-1001",
+          "found": true,
+          "amount": 2850.0,
+          "timestamp": "2026-08-11T14:32:00Z",
+          "product_code": "W",
+          "channel": "ONLINE",
+          "anomaly_score": 0.88,
+          "device": {
+            "id": "DEV-FARM-EMU-01",
+            "fingerprint": "fp_88a912bfa",
+            "device_type": "EMULATOR",
+            "os": "Android 9 / Bluestacks",
+            "browser": "Chrome Headless 122",
+            "is_emulator": true,
+            "shared_user_count": 4,
+            "_type": "Device"
+          },
+          "ip": {
+            "id": "IP-TOR-101",
+            "ip_address": "185.220.101.22",
+            "country": "DE",
+            "is_vpn": true,
+            "is_tor": true,
+            "risk_score": 0.95,
+            "_type": "IP"
+          },
+          "merchant": {
+            "id": "MERCH-LUX-01",
+            "name": "Apex Luxury Electronics",
+            "category": "High-End Consumer Goods",
+            "risk_tier": "HIGH",
+            "_type": "Merchant"
+          },
+          "account": {
+            "id": "ACC-1001",
+            "account_number": "4111-XXXX-XXXX-8921",
+            "balance": 5200.0,
+            "status": "ACTIVE",
+            "_type": "Account"
+          }
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "GATHER_GRAPH_EVIDENCE",
+        "description": "Executed GSQL query trace_device_sharing on Device DEV-FARM-EMU-01: 4 linked customers.",
+        "data": {
+          "device": {
+            "id": "DEV-FARM-EMU-01",
+            "fingerprint": "fp_88a912bfa",
+            "device_type": "EMULATOR",
+            "os": "Android 9 / Bluestacks",
+            "browser": "Chrome Headless 122",
+            "is_emulator": true,
+            "shared_user_count": 4,
+            "_type": "Device"
+          },
+          "distinct_customers": 4,
+          "customers": [
+            {
+              "id": "CUST-0892",
+              "name": "Syndicate Alias CUST-0892",
+              "risk_score": 0.85,
+              "kyc_status": "SUSPICIOUS",
+              "_type": "Customer"
+            },
+            {
+              "id": "CUST-1001",
+              "name": "Marcus Vance",
+              "risk_score": 0.45,
+              "kyc_status": "VERIFIED",
+              "total_transactions": 14,
+              "chargeback_count": 1,
+              "_type": "Customer"
+            },
+            {
+              "id": "CUST-0441",
+              "name": "Syndicate Alias CUST-0441",
+              "risk_score": 0.85,
+              "kyc_status": "SUSPICIOUS",
+              "_type": "Customer"
+            },
+            {
+              "id": "CUST-0912",
+              "name": "Syndicate Alias CUST-0912",
+              "risk_score": 0.85,
+              "kyc_status": "SUSPICIOUS",
+              "_type": "Customer"
+            }
+          ],
+          "transactions": [
+            {
+              "id": "TXN-BM-1001",
+              "amount": 2850.0,
+              "timestamp": "2026-08-11T14:32:00Z",
+              "epoch_seconds": 1734954720,
+              "currency": "USD",
+              "channel": "ONLINE",
+              "product_code": "W",
+              "anomaly_score": 0.88,
+              "is_risky": true,
+              "_type": "Transaction"
+            }
+          ],
+          "is_device_farm": true
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "GATHER_GRAPH_EVIDENCE",
+        "description": "Executed GSQL query trace_ip_cluster on IP IP-TOR-101: 1 connected accounts.",
+        "data": {
+          "ip": {
+            "id": "IP-TOR-101",
+            "ip_address": "185.220.101.22",
+            "country": "DE",
+            "is_vpn": true,
+            "is_tor": true,
+            "risk_score": 0.95,
+            "_type": "IP"
+          },
+          "txn_count": 1,
+          "customer_count": 1,
+          "total_volume": 2850.0,
+          "customers": [
+            {
+              "id": "CUST-1001",
+              "name": "Marcus Vance",
+              "risk_score": 0.45,
+              "kyc_status": "VERIFIED",
+              "total_transactions": 14,
+              "chargeback_count": 1,
+              "_type": "Customer"
+            }
+          ],
+          "transactions": [
+            {
+              "id": "TXN-BM-1001",
+              "amount": 2850.0,
+              "timestamp": "2026-08-11T14:32:00Z",
+              "epoch_seconds": 1734954720,
+              "currency": "USD",
+              "channel": "ONLINE",
+              "product_code": "W",
+              "anomaly_score": 0.88,
+              "is_risky": true,
+              "_type": "Transaction"
+            }
+          ],
+          "is_proxy_cluster": true
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "RETRIEVE_TRANSACTION_HISTORY",
+        "description": "Checked historical baseline for Customer CUST-0441: Avg spend $0.00",
+        "data": {
+          "customer_id": "CUST-0441",
+          "found": true,
+          "name": "Syndicate Alias CUST-0441",
+          "kyc_status": "SUSPICIOUS",
+          "account_count": 0,
+          "total_historical_txns": 0,
+          "total_historical_spend": 0.0,
+          "average_transaction_amount": 0.0,
+          "chargeback_count": 0,
+          "customer_risk_rating": 0.85
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "IDENTIFY_FRAUD_PATTERN",
+        "description": "Graph pattern detection identified: 'Device Farming / Multi-Accounting' (2 patterns detected).",
+        "data": {
+          "patterns_detected": [
+            {
+              "name": "Device Farming / Multi-Accounting",
+              "severity": "CRITICAL",
+              "evidence": "Device DEV-FARM-EMU-01 shared across 4 distinct customer accounts"
+            },
+            {
+              "name": "Tor Anonymized Exit Node",
+              "severity": "HIGH",
+              "evidence": "Originating IP 185.220.101.22 is a confirmed Tor exit relay"
+            }
+          ],
+          "primary_pattern": "Device Farming / Multi-Accounting",
+          "pattern_count": 2
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "RETRIEVE_POLICY_GRAPHRAG",
+        "description": "GraphRAG retrieved 3 governing policies and typology 'Device Farming / Multi-Accounting'",
+        "data": [
+          {
+            "policy_code": "POL-001",
+            "title": "High-Velocity & Off-Hour Volume Spike Policy",
+            "category": "Velocity Controls",
+            "summary": "Mandates automated transaction throttling or step-up authentication when an account exhibits >=3 transactions within 60 minutes or a 300% deviation from 30-day baseline spend.",
+            "threshold_rules": "txn_count >= 3 in 1hr OR amount_deviation >= 3.0",
+            "mandatory_approval": false,
+            "applicable_actions": [
+              "REQUEST_STEP_UP_AUTHENTICATION",
+              "MONITOR_ACCOUNT",
+              "BLOCK_TRANSACTION"
+            ],
+            "regulatory_reference": "FFIEC Retail Payment Systems Handbook \u00a74.2"
+          },
+          {
+            "policy_code": "POL-002",
+            "title": "Device Multi-Accounting & Farm Fingerprint Policy",
+            "category": "Device Intelligence",
+            "summary": "Any hardware device fingerprint associated with 3 or more distinct customer profiles or flagged as an emulated virtual machine must be subjected to biometric step-up verification or immediate containment.",
+            "threshold_rules": "distinct_customers >= 3 OR is_emulator == true",
+            "mandatory_approval": false,
+            "applicable_actions": [
+              "BLOCK_TRANSACTION",
+              "WARN_CUSTOMER",
+              "REQUEST_STEP_UP_AUTHENTICATION"
+            ],
+            "regulatory_reference": "NIST SP 800-63B Authenticator Assurance Level 2 (AAL2)"
+          },
+          {
+            "policy_code": "POL-003",
+            "title": "Money Mule Pass-Through Network Policy",
+            "category": "Anti-Money Laundering (AML)",
+            "summary": "Accounts participating in rapid pass-through funds routing (hop count >= 3 within 24 hours of receipt) require immediate temporary debit freeze and mandatory escalation to Fraud / AML operations.",
+            "threshold_rules": "mule_hops >= 3 AND holding_period_hours < 24",
+            "mandatory_approval": true,
+            "applicable_actions": [
+              "BLOCK_TRANSACTION",
+              "ESCALATE_TO_FRAUD_ANALYST",
+              "FILE_REGULATORY_REPORT"
+            ],
+            "regulatory_reference": "FinCEN Advisory FIN-2020-A003 on Money Mules"
+          }
+        ]
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "RETRIEVE_SIMILAR_CASES",
+        "description": "Retrieved 3 structurally similar historical cases from case memory.",
+        "data": [
+          {
+            "case_id": "HIST-CASE-101",
+            "case_number": "HIST-CASE-101",
+            "transaction_id": "TXN-HIST-001",
+            "day_offset": 14,
+            "trigger_reason": "Device Farming Alert - 5 Linked Cards",
+            "amount": 1850.0,
+            "fraud_pattern": "Device Farming / Multi-Accounting",
+            "final_risk_score": 0.89,
+            "confidence_score": 0.92,
+            "uncertainty_score": 0.08,
+            "action": "BLOCK_TRANSACTION",
+            "actions": [
+              "BLOCK_TRANSACTION"
+            ],
+            "outcome": "CONFIRMED_FRAUD",
+            "final_resolution": "CONFIRMED_FRAUD",
+            "entities": {
+              "customer_id": "CUST-H101",
+              "account_id": "ACC-H101",
+              "device_id": "DEV-FARM-99",
+              "ip_address": "194.26.29.11",
+              "is_emulator": true,
+              "is_vpn": true
+            },
+            "id": "HIST-CASE-101",
+            "_type": "FraudCase",
+            "similarity_score": 0.97,
+            "similarity_pct": 97,
+            "relevance_explanation": "Identical typology (Device Farming / Multi-Accounting) | Historical outcome was CONFIRMED_FRAUD with action 'BLOCK_TRANSACTION'"
+          },
+          {
+            "case_id": "HIST-CASE-102",
+            "case_number": "HIST-CASE-102",
+            "transaction_id": "TXN-HIST-002",
+            "day_offset": 32,
+            "trigger_reason": "Rapid Pass-Through Mule Ring Alert",
+            "amount": 7400.0,
+            "fraud_pattern": "Money Mule Pass-Through Syndicate",
+            "final_risk_score": 0.94,
+            "confidence_score": 0.95,
+            "uncertainty_score": 0.05,
+            "action": "ESCALATE_TO_FRAUD_ANALYST",
+            "actions": [
+              "ESCALATE_TO_FRAUD_ANALYST",
+              "FILE_REGULATORY_REPORT"
+            ],
+            "outcome": "CONFIRMED_FRAUD",
+            "final_resolution": "CONFIRMED_FRAUD",
+            "entities": {
+              "customer_id": "CUST-H102",
+              "account_id": "ACC-H102",
+              "device_id": "DEV-CLEAN-102",
+              "ip_address": "185.220.101.5",
+              "is_emulator": false,
+              "is_vpn": true
+            },
+            "id": "HIST-CASE-102",
+            "_type": "FraudCase",
+            "similarity_score": 0.46,
+            "similarity_pct": 46,
+            "relevance_explanation": "Historical outcome was CONFIRMED_FRAUD with action 'ESCALATE_TO_FRAUD_ANALYST'"
+          },
+          {
+            "case_id": "HIST-CASE-104",
+            "case_number": "HIST-CASE-104",
+            "transaction_id": "TXN-HIST-004",
+            "day_offset": 84,
+            "trigger_reason": "Velocity Burst at Electronics Merchant",
+            "amount": 1420.0,
+            "fraud_pattern": "Card Testing & Velocity Burst",
+            "final_risk_score": 0.81,
+            "confidence_score": 0.85,
+            "uncertainty_score": 0.15,
+            "action": "BLOCK_TRANSACTION",
+            "actions": [
+              "BLOCK_TRANSACTION"
+            ],
+            "outcome": "CONFIRMED_FRAUD",
+            "final_resolution": "CONFIRMED_FRAUD",
+            "entities": {
+              "customer_id": "CUST-H104",
+              "account_id": "ACC-H104",
+              "device_id": "DEV-WEB-104",
+              "ip_address": "45.154.255.8",
+              "is_emulator": false,
+              "is_vpn": true
+            },
+            "id": "HIST-CASE-104",
+            "_type": "FraudCase",
+            "similarity_score": 0.45,
+            "similarity_pct": 45,
+            "relevance_explanation": "Historical outcome was CONFIRMED_FRAUD with action 'BLOCK_TRANSACTION'"
+          }
+        ]
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "ASSESS_UNCERTAINTY",
+        "description": "Risk Level: CRITICAL (Score: 0.96) | Confidence: 0.97 | Uncertainty: 0.03 | Additional Evidence Required: False",
+        "data": {
+          "risk_score": 0.96,
+          "risk_level": "CRITICAL",
+          "confidence_score": 0.97,
+          "uncertainty_score": 0.03,
+          "breakdown": {
+            "graph_support_pct": 100.0,
+            "historical_support_pct": 100.0,
+            "signal_strength_pct": 88.0,
+            "evidence_coverage_pct": 100.0
+          },
+          "evidence_count": 4,
+          "supporting_evidence": [
+            {
+              "description": "Device shared across 4 customers",
+              "polarity": "SUPPORTING",
+              "source_tool": "trace_device_connections"
+            },
+            {
+              "description": "Anonymized network connection (185.220.101.22)",
+              "polarity": "SUPPORTING",
+              "source_tool": "trace_ip_connections"
+            },
+            {
+              "description": "Customer transactional baseline verified",
+              "polarity": "SUPPORTING",
+              "source_tool": "search_customer_history"
+            },
+            {
+              "description": "Enforces policy POL-001",
+              "polarity": "SUPPORTING",
+              "source_tool": "retrieve_fraud_policy"
+            }
+          ],
+          "contradicting_evidence": [],
+          "missing_evidence": [
+            "Out-of-band Step-Up MFA / Biometric verification"
+          ],
+          "investigation_status": "ACTIONABLE",
+          "additional_evidence_required": false,
+          "is_defensible": true
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "DETERMINE_NEXT_BEST_ACTION",
+        "description": "Recommended Next Best Action: BLOCK_TRANSACTION (Block Transaction & Freeze Channel)",
+        "data": {
+          "action": "BLOCK_TRANSACTION",
+          "action_display": "Block Transaction & Freeze Channel",
+          "reason": "Confirmed fraud signature with high confidence (0.97). Transaction amount ($2,850.00) mandates human analyst review prior to cardholder debit freeze.",
+          "evidence": [
+            "Device shared across 4 customers",
+            "Anonymized network connection (185.220.101.22)",
+            "Customer transactional baseline verified",
+            "Enforces policy POL-001"
+          ],
+          "confidence": 0.97,
+          "risk": 0.96,
+          "required_approval": "TIER_1_FRAUD_ANALYST",
+          "approval_display": "Tier-1 Fraud Analyst Approval Required (Value > $2,000)",
+          "policy_reference": "POL-005 (High-Value Destructive Action Governance)",
+          "remaining_uncertainty": 0.03,
+          "is_sensitive": true
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "CHECK_POLICY_PERMISSION",
+        "description": "Policy check completed. Requires approval: True (Tier: TIER_1_FRAUD_ANALYST)",
+        "data": {
+          "action": "BLOCK_TRANSACTION",
+          "amount": 2850.0,
+          "requires_approval": true,
+          "approval_tier": "TIER_1_FRAUD_ANALYST",
+          "governing_policy": "POL-005",
+          "permitted_to_auto_execute": false
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "REQUEST_HUMAN_APPROVAL",
+        "description": "Queued for human sign-off (TIER_1_FRAUD_ANALYST)",
+        "data": {
+          "approval_id": "APPR-1790249027-2421",
+          "case_id": "CASE-1790249027-B9F7",
+          "action_type": "BLOCK_TRANSACTION",
+          "reason": "Confirmed fraud signature with high confidence (0.97). Transaction amount ($2,850.00) mandates human analyst review prior to cardholder debit freeze.",
+          "tier": "TIER_1_FRAUD_ANALYST",
+          "status": "AWAITING_REVIEW",
+          "created_at": "2026-09-24T11:23:47Z"
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "EXPLAIN_DECISION",
+        "description": "Generated 8-question structured explainability rationale.",
+        "data": {
+          "what_did_the_agent_find": "Physical device fingerprint shared across 4 distinct customer identities; Emulated virtual machine hardware environment; Anonymizing VPN/Proxy routing (185.220.101.22) (Identified Typology: Device Farming / Multi-Accounting).",
+          "why_is_this_suspicious": "Device collision pattern indicates synthetic farming or multi-accounting fraud. Geolocation obfuscation masks true originating host network. Transactional value ($2,850.00) significantly elevates downside exposure.",
+          "what_evidence_is_missing": "Out-of-band Step-Up MFA / Biometric verification",
+          "why_was_additional_evidence_requested": "Initial evidence and historical case precedents provided sufficient confidence to act defensibly without requiring additional verification.",
+          "why_was_this_action_selected": "The action 'Block Transaction & Freeze Channel' was selected because it maximizes loss prevention while minimizing false-positive friction. Final risk score is 0.96 with 97% confidence.",
+          "what_policy_supports_this_action": "POL-005 (High-Value Destructive Action Governance). Threshold criteria and category governance verified against GraphRAG repository.",
+          "what_approval_is_required": "Tier-1 Fraud Analyst Approval Required (Value > $2,000). Requires human analyst sign-off prior to cardholder debit freeze.",
+          "what_uncertainty_remains": "Remaining decision uncertainty is 3.0%. Ongoing behavioral monitoring is established to mitigate residual risk."
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "UPDATE_CASE_MEMORY",
+        "description": "Persisted case outcome (BLOCKED) into TigerGraph case memory.",
+        "data": {
+          "id": "CASE-1790249027-B9F7",
+          "case_id": "CASE-1790249027-B9F7",
+          "transaction_id": "TXN-BM-1001",
+          "trigger_reason": "Device Hardware Fingerprint Collision & Emulated Environment",
+          "amount": 2850.0,
+          "fraud_pattern": "Device Farming / Multi-Accounting",
+          "final_risk_score": 0.96,
+          "confidence_score": 0.97,
+          "uncertainty_score": 0.03,
+          "action": "BLOCK_TRANSACTION",
+          "actions": [
+            "BLOCK_TRANSACTION"
+          ],
+          "outcome": "BLOCKED",
+          "final_resolution": "BLOCKED",
+          "entities": {
+            "device_id": "DEV-FARM-EMU-01",
+            "is_emulator": true,
+            "ip_address": "185.220.101.22",
+            "is_vpn": true
+          },
+          "closed_at": "2026-09-24T11:23:47Z",
+          "status": "CLOSED",
+          "_type": "FraudCase"
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "CLOSE_OR_ESCALATE",
+        "description": "Case investigation concluded in 0ms with outcome: BLOCKED.",
+        "data": null
+      }
+    ]
+  },
+  "Evidence": [
+    {
+      "description": "Device shared across 4 customers",
+      "polarity": "SUPPORTING",
+      "source_tool": "trace_device_connections"
+    },
+    {
+      "description": "Anonymized network connection (185.220.101.22)",
+      "polarity": "SUPPORTING",
+      "source_tool": "trace_ip_connections"
+    },
+    {
+      "description": "Customer transactional baseline verified",
+      "polarity": "SUPPORTING",
+      "source_tool": "search_customer_history"
+    },
+    {
+      "description": "Enforces policy POL-001",
+      "polarity": "SUPPORTING",
+      "source_tool": "retrieve_fraud_policy"
+    }
+  ],
+  "Findings": "Physical device fingerprint shared across 4 distinct customer identities; Emulated virtual machine hardware environment; Anonymizing VPN/Proxy routing (185.220.101.22) (Identified Typology: Device Farming / Multi-Accounting).",
+  "Fraud pattern": "Device Farming / Multi-Accounting",
+  "Risk": 0.96,
+  "Confidence": 0.97,
+  "Decisions": {
+    "pre_evidence_action": "BLOCK_TRANSACTION",
+    "additional_evidence_dispatched": false,
+    "final_recommended_action": "BLOCK_TRANSACTION",
+    "status": "AWAITING_APPROVAL"
+  },
+  "Actions": [
+    "BLOCK_TRANSACTION"
+  ],
+  "Required approval": "TIER_1_FRAUD_ANALYST",
+  "Next Best Action before additional evidence": {
+    "action": "BLOCK_TRANSACTION",
+    "action_display": "Block Transaction & Freeze Channel",
+    "reason": "Confirmed fraud signature with high confidence (0.97). Transaction amount ($2,850.00) mandates human analyst review prior to cardholder debit freeze.",
+    "evidence": [
+      "Device shared across 4 customers",
+      "Anonymized network connection (185.220.101.22)",
+      "Customer transactional baseline verified",
+      "Enforces policy POL-001"
+    ],
+    "confidence": 0.97,
+    "risk": 0.96,
+    "required_approval": "TIER_1_FRAUD_ANALYST",
+    "approval_display": "Tier-1 Fraud Analyst Approval Required (Value > $2,000)",
+    "policy_reference": "POL-005 (High-Value Destructive Action Governance)",
+    "remaining_uncertainty": 0.03,
+    "is_sensitive": true
+  },
+  "Additional evidence requested": null,
+  "Result of additional evidence": null,
+  "Updated Next Best Action": {
+    "action": "BLOCK_TRANSACTION",
+    "action_display": "Block Transaction & Freeze Channel",
+    "reason": "Confirmed fraud signature with high confidence (0.97). Transaction amount ($2,850.00) mandates human analyst review prior to cardholder debit freeze.",
+    "evidence": [
+      "Device shared across 4 customers",
+      "Anonymized network connection (185.220.101.22)",
+      "Customer transactional baseline verified",
+      "Enforces policy POL-001"
+    ],
+    "confidence": 0.97,
+    "risk": 0.96,
+    "required_approval": "TIER_1_FRAUD_ANALYST",
+    "approval_display": "Tier-1 Fraud Analyst Approval Required (Value > $2,000)",
+    "policy_reference": "POL-005 (High-Value Destructive Action Governance)",
+    "remaining_uncertainty": 0.03,
+    "is_sensitive": true
+  },
+  "Final outcome": "BLOCKED",
+  "Case memory entry": {
+    "case_id": "CASE-1790249027-B9F7",
+    "transaction_id": "TXN-BM-1001",
+    "fraud_pattern": "Device Farming / Multi-Accounting",
+    "final_risk_score": 0.96,
+    "confidence_score": 0.97,
+    "resolution": "RESOLVED"
+  },
+  "Explainability": {
+    "what_did_the_agent_find": "Physical device fingerprint shared across 4 distinct customer identities; Emulated virtual machine hardware environment; Anonymizing VPN/Proxy routing (185.220.101.22) (Identified Typology: Device Farming / Multi-Accounting).",
+    "why_is_this_suspicious": "Device collision pattern indicates synthetic farming or multi-accounting fraud. Geolocation obfuscation masks true originating host network. Transactional value ($2,850.00) significantly elevates downside exposure.",
+    "what_evidence_is_missing": "Out-of-band Step-Up MFA / Biometric verification",
+    "why_was_additional_evidence_requested": "Initial evidence and historical case precedents provided sufficient confidence to act defensibly without requiring additional verification.",
+    "why_was_this_action_selected": "The action 'Block Transaction & Freeze Channel' was selected because it maximizes loss prevention while minimizing false-positive friction. Final risk score is 0.96 with 97% confidence.",
+    "what_policy_supports_this_action": "POL-005 (High-Value Destructive Action Governance). Threshold criteria and category governance verified against GraphRAG repository.",
+    "what_approval_is_required": "Tier-1 Fraud Analyst Approval Required (Value > $2,000). Requires human analyst sign-off prior to cardholder debit freeze.",
+    "what_uncertainty_remains": "Remaining decision uncertainty is 3.0%. Ongoing behavioral monitoring is established to mitigate residual risk."
+  }
+}

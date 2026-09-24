@@ -1,0 +1,665 @@
+{
+  "Case": {
+    "benchmark_id": "BENCHMARK-CASE-04",
+    "case_id": "CASE-1790249027-77A0",
+    "transaction_id": "TXN-BM-1004",
+    "title": "Scenario 4: High-Value Pass-Through Money Mule Ring",
+    "trigger_reason": "Rapid Pass-Through Chain Exceeding Mandatory SAR Limits",
+    "expected_scenario": "High-value mule chain exceeding $5,000 threshold requiring senior analyst review and FinCEN SAR filing"
+  },
+  "Investigation record": {
+    "started_at": "2026-09-24T11:23:47Z",
+    "completed_at": "2026-09-24T11:23:47Z",
+    "execution_time_ms": 0,
+    "steps_executed": 19,
+    "timeline": [
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "TRIGGER",
+        "description": "Received investigation trigger: 'Rapid Pass-Through Chain Exceeding Mandatory SAR Limits' for Transaction TXN-BM-1004",
+        "data": null
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "CREATE_CASE",
+        "description": "Opened new fraud investigation case: CASE-1790249027-77A0",
+        "data": {
+          "id": "CASE-1790249027-77A0",
+          "case_number": "CASE-1790249027-77A0",
+          "status": "OPEN",
+          "trigger_reason": "Rapid Pass-Through Chain Exceeding Mandatory SAR Limits",
+          "created_at": "2026-09-24T11:23:47Z",
+          "closed_at": null,
+          "final_risk_score": 0.0,
+          "confidence_score": 0.0,
+          "outcome": "PENDING",
+          "_type": "FraudCase"
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "INVESTIGATE",
+        "description": "Retrieved transactional context: Amount=$9,200.00",
+        "data": {
+          "transaction_id": "TXN-BM-1004",
+          "found": true,
+          "amount": 9200.0,
+          "timestamp": "2026-08-14T14:32:00Z",
+          "product_code": "W",
+          "channel": "ONLINE",
+          "anomaly_score": 0.92,
+          "device": {
+            "id": "DEV-WIN-04",
+            "fingerprint": "fp_win_7721",
+            "device_type": "DESKTOP",
+            "os": "Windows 11",
+            "browser": "Edge 123",
+            "is_emulator": false,
+            "shared_user_count": 1,
+            "_type": "Device"
+          },
+          "ip": {
+            "id": "IP-MULE-04",
+            "ip_address": "91.240.118.50",
+            "country": "NL",
+            "is_vpn": true,
+            "is_tor": false,
+            "risk_score": 0.85,
+            "_type": "IP"
+          },
+          "merchant": {
+            "id": "MERCH-P2P-04",
+            "name": "CryptoPay Gateway Liquidity",
+            "category": "Virtual Asset Service Provider",
+            "risk_tier": "CRITICAL",
+            "_type": "Merchant"
+          },
+          "account": {
+            "id": "ACC-1004",
+            "account_number": "4321-XXXX-XXXX-7701",
+            "balance": 10500.0,
+            "status": "ACTIVE",
+            "_type": "Account"
+          }
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "GATHER_GRAPH_EVIDENCE",
+        "description": "Executed GSQL query trace_device_sharing on Device DEV-WIN-04: 1 linked customers.",
+        "data": {
+          "device": {
+            "id": "DEV-WIN-04",
+            "fingerprint": "fp_win_7721",
+            "device_type": "DESKTOP",
+            "os": "Windows 11",
+            "browser": "Edge 123",
+            "is_emulator": false,
+            "shared_user_count": 1,
+            "_type": "Device"
+          },
+          "distinct_customers": 1,
+          "customers": [
+            {
+              "id": "CUST-1004",
+              "name": "Arthur Pendelton",
+              "risk_score": 0.65,
+              "kyc_status": "VERIFIED",
+              "total_transactions": 14,
+              "chargeback_count": 2,
+              "_type": "Customer"
+            }
+          ],
+          "transactions": [
+            {
+              "id": "TXN-BM-1004",
+              "amount": 9200.0,
+              "timestamp": "2026-08-14T14:32:00Z",
+              "epoch_seconds": 1738151520,
+              "currency": "USD",
+              "channel": "ONLINE",
+              "product_code": "W",
+              "anomaly_score": 0.92,
+              "is_risky": true,
+              "_type": "Transaction"
+            }
+          ],
+          "is_device_farm": false
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "GATHER_GRAPH_EVIDENCE",
+        "description": "Executed GSQL query trace_ip_cluster on IP IP-MULE-04: 1 connected accounts.",
+        "data": {
+          "ip": {
+            "id": "IP-MULE-04",
+            "ip_address": "91.240.118.50",
+            "country": "NL",
+            "is_vpn": true,
+            "is_tor": false,
+            "risk_score": 0.85,
+            "_type": "IP"
+          },
+          "txn_count": 1,
+          "customer_count": 1,
+          "total_volume": 9200.0,
+          "customers": [
+            {
+              "id": "CUST-1004",
+              "name": "Arthur Pendelton",
+              "risk_score": 0.65,
+              "kyc_status": "VERIFIED",
+              "total_transactions": 14,
+              "chargeback_count": 2,
+              "_type": "Customer"
+            }
+          ],
+          "transactions": [
+            {
+              "id": "TXN-BM-1004",
+              "amount": 9200.0,
+              "timestamp": "2026-08-14T14:32:00Z",
+              "epoch_seconds": 1738151520,
+              "currency": "USD",
+              "channel": "ONLINE",
+              "product_code": "W",
+              "anomaly_score": 0.92,
+              "is_risky": true,
+              "_type": "Transaction"
+            }
+          ],
+          "is_proxy_cluster": true
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "RETRIEVE_TRANSACTION_HISTORY",
+        "description": "Checked historical baseline for Customer CUST-1004: Avg spend $9,200.00",
+        "data": {
+          "customer_id": "CUST-1004",
+          "found": true,
+          "name": "Arthur Pendelton",
+          "kyc_status": "VERIFIED",
+          "account_count": 1,
+          "total_historical_txns": 1,
+          "total_historical_spend": 9200.0,
+          "average_transaction_amount": 9200.0,
+          "chargeback_count": 2,
+          "customer_risk_rating": 0.65
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "IDENTIFY_FRAUD_PATTERN",
+        "description": "Graph pattern detection identified: 'Proxy/VPN Cluster Anomaly' (1 patterns detected).",
+        "data": {
+          "patterns_detected": [
+            {
+              "name": "Proxy/VPN Cluster Anomaly",
+              "severity": "MEDIUM",
+              "evidence": "IP cluster contains 1 accounts routing high volume"
+            }
+          ],
+          "primary_pattern": "Proxy/VPN Cluster Anomaly",
+          "pattern_count": 1
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "RETRIEVE_POLICY_GRAPHRAG",
+        "description": "GraphRAG retrieved 3 governing policies and typology 'Account Takeover (ATO)'",
+        "data": [
+          {
+            "policy_code": "POL-001",
+            "title": "High-Velocity & Off-Hour Volume Spike Policy",
+            "category": "Velocity Controls",
+            "summary": "Mandates automated transaction throttling or step-up authentication when an account exhibits >=3 transactions within 60 minutes or a 300% deviation from 30-day baseline spend.",
+            "threshold_rules": "txn_count >= 3 in 1hr OR amount_deviation >= 3.0",
+            "mandatory_approval": false,
+            "applicable_actions": [
+              "REQUEST_STEP_UP_AUTHENTICATION",
+              "MONITOR_ACCOUNT",
+              "BLOCK_TRANSACTION"
+            ],
+            "regulatory_reference": "FFIEC Retail Payment Systems Handbook \u00a74.2"
+          },
+          {
+            "policy_code": "POL-002",
+            "title": "Device Multi-Accounting & Farm Fingerprint Policy",
+            "category": "Device Intelligence",
+            "summary": "Any hardware device fingerprint associated with 3 or more distinct customer profiles or flagged as an emulated virtual machine must be subjected to biometric step-up verification or immediate containment.",
+            "threshold_rules": "distinct_customers >= 3 OR is_emulator == true",
+            "mandatory_approval": false,
+            "applicable_actions": [
+              "BLOCK_TRANSACTION",
+              "WARN_CUSTOMER",
+              "REQUEST_STEP_UP_AUTHENTICATION"
+            ],
+            "regulatory_reference": "NIST SP 800-63B Authenticator Assurance Level 2 (AAL2)"
+          },
+          {
+            "policy_code": "POL-003",
+            "title": "Money Mule Pass-Through Network Policy",
+            "category": "Anti-Money Laundering (AML)",
+            "summary": "Accounts participating in rapid pass-through funds routing (hop count >= 3 within 24 hours of receipt) require immediate temporary debit freeze and mandatory escalation to Fraud / AML operations.",
+            "threshold_rules": "mule_hops >= 3 AND holding_period_hours < 24",
+            "mandatory_approval": true,
+            "applicable_actions": [
+              "BLOCK_TRANSACTION",
+              "ESCALATE_TO_FRAUD_ANALYST",
+              "FILE_REGULATORY_REPORT"
+            ],
+            "regulatory_reference": "FinCEN Advisory FIN-2020-A003 on Money Mules"
+          }
+        ]
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "RETRIEVE_SIMILAR_CASES",
+        "description": "Retrieved 3 structurally similar historical cases from case memory.",
+        "data": [
+          {
+            "id": "CASE-1790249027-EDEC",
+            "case_id": "CASE-1790249027-EDEC",
+            "transaction_id": "TXN-BM-1002",
+            "trigger_reason": "Unrecognized Device with Elevated Behavioral Velocity",
+            "amount": 850.0,
+            "fraud_pattern": "Proxy/VPN Cluster Anomaly",
+            "final_risk_score": 0.44,
+            "confidence_score": 0.66,
+            "uncertainty_score": 0.34,
+            "action": "MONITOR_ACCOUNT",
+            "actions": [
+              "MONITOR_ACCOUNT"
+            ],
+            "outcome": "MONITORED",
+            "final_resolution": "MONITORED",
+            "entities": {
+              "device_id": "DEV-UNKNOWN-02",
+              "is_emulator": false,
+              "ip_address": "104.28.192.4",
+              "is_vpn": true
+            },
+            "closed_at": "2026-09-24T11:23:47Z",
+            "status": "CLOSED",
+            "_type": "FraudCase",
+            "similarity_score": 0.9,
+            "similarity_pct": 90,
+            "relevance_explanation": "Identical typology (Proxy/VPN Cluster Anomaly) | Historical outcome was MONITORED with action 'MONITOR_ACCOUNT'"
+          },
+          {
+            "case_id": "HIST-CASE-102",
+            "case_number": "HIST-CASE-102",
+            "transaction_id": "TXN-HIST-002",
+            "day_offset": 32,
+            "trigger_reason": "Rapid Pass-Through Mule Ring Alert",
+            "amount": 7400.0,
+            "fraud_pattern": "Money Mule Pass-Through Syndicate",
+            "final_risk_score": 0.94,
+            "confidence_score": 0.95,
+            "uncertainty_score": 0.05,
+            "action": "ESCALATE_TO_FRAUD_ANALYST",
+            "actions": [
+              "ESCALATE_TO_FRAUD_ANALYST",
+              "FILE_REGULATORY_REPORT"
+            ],
+            "outcome": "CONFIRMED_FRAUD",
+            "final_resolution": "CONFIRMED_FRAUD",
+            "entities": {
+              "customer_id": "CUST-H102",
+              "account_id": "ACC-H102",
+              "device_id": "DEV-CLEAN-102",
+              "ip_address": "185.220.101.5",
+              "is_emulator": false,
+              "is_vpn": true
+            },
+            "id": "HIST-CASE-102",
+            "_type": "FraudCase",
+            "similarity_score": 0.5,
+            "similarity_pct": 50,
+            "relevance_explanation": "Historical outcome was CONFIRMED_FRAUD with action 'ESCALATE_TO_FRAUD_ANALYST'"
+          },
+          {
+            "case_id": "HIST-CASE-104",
+            "case_number": "HIST-CASE-104",
+            "transaction_id": "TXN-HIST-004",
+            "day_offset": 84,
+            "trigger_reason": "Velocity Burst at Electronics Merchant",
+            "amount": 1420.0,
+            "fraud_pattern": "Card Testing & Velocity Burst",
+            "final_risk_score": 0.81,
+            "confidence_score": 0.85,
+            "uncertainty_score": 0.15,
+            "action": "BLOCK_TRANSACTION",
+            "actions": [
+              "BLOCK_TRANSACTION"
+            ],
+            "outcome": "CONFIRMED_FRAUD",
+            "final_resolution": "CONFIRMED_FRAUD",
+            "entities": {
+              "customer_id": "CUST-H104",
+              "account_id": "ACC-H104",
+              "device_id": "DEV-WEB-104",
+              "ip_address": "45.154.255.8",
+              "is_emulator": false,
+              "is_vpn": true
+            },
+            "id": "HIST-CASE-104",
+            "_type": "FraudCase",
+            "similarity_score": 0.46,
+            "similarity_pct": 46,
+            "relevance_explanation": "Historical outcome was CONFIRMED_FRAUD with action 'BLOCK_TRANSACTION'"
+          }
+        ]
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "ASSESS_UNCERTAINTY",
+        "description": "Risk Level: HIGH (Score: 0.61) | Confidence: 0.74 | Uncertainty: 0.26 | Additional Evidence Required: True",
+        "data": {
+          "risk_score": 0.61,
+          "risk_level": "HIGH",
+          "confidence_score": 0.74,
+          "uncertainty_score": 0.26,
+          "breakdown": {
+            "graph_support_pct": 35.0,
+            "historical_support_pct": 66.7,
+            "signal_strength_pct": 92.0,
+            "evidence_coverage_pct": 75.0
+          },
+          "evidence_count": 3,
+          "supporting_evidence": [
+            {
+              "description": "Anonymized network connection (91.240.118.50)",
+              "polarity": "SUPPORTING",
+              "source_tool": "trace_ip_connections"
+            },
+            {
+              "description": "Customer transactional baseline verified",
+              "polarity": "SUPPORTING",
+              "source_tool": "search_customer_history"
+            },
+            {
+              "description": "Enforces policy POL-001",
+              "polarity": "SUPPORTING",
+              "source_tool": "retrieve_fraud_policy"
+            }
+          ],
+          "contradicting_evidence": [],
+          "missing_evidence": [
+            "Device hardware fingerprint linkage verification",
+            "Out-of-band Step-Up MFA / Biometric verification"
+          ],
+          "investigation_status": "NEEDS_EVIDENCE",
+          "additional_evidence_required": true,
+          "is_defensible": true
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "REQUEST_ADDITIONAL_EVIDENCE",
+        "description": "Uncertainty exceeds defensible threshold. Dispatching biometric/SMS Step-Up Authentication challenge.",
+        "data": null
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "RECEIVE_RESULT",
+        "description": "Step-up authentication result received: FAILED",
+        "data": {
+          "transaction_id": "TXN-BM-1004",
+          "method": "BIOMETRIC_PUSH",
+          "outcome": "FAILED",
+          "latency_ms": 340,
+          "timestamp": "2026-09-24T11:23:47Z",
+          "details": "Step-up challenge (BIOMETRIC_PUSH) returned: FAILED."
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "REASSESS_RISK",
+        "description": "Recalculated Risk: 0.86 | Updated Confidence: 0.98 | Updated Uncertainty: 0.02",
+        "data": {
+          "risk_score": 0.86,
+          "risk_level": "CRITICAL",
+          "confidence_score": 0.98,
+          "uncertainty_score": 0.02,
+          "breakdown": {
+            "graph_support_pct": 35.0,
+            "historical_support_pct": 66.7,
+            "signal_strength_pct": 92.0,
+            "evidence_coverage_pct": 75.0
+          },
+          "evidence_count": 4,
+          "supporting_evidence": [
+            {
+              "description": "Anonymized network connection (91.240.118.50)",
+              "polarity": "SUPPORTING",
+              "source_tool": "trace_ip_connections"
+            },
+            {
+              "description": "Customer transactional baseline verified",
+              "polarity": "SUPPORTING",
+              "source_tool": "search_customer_history"
+            },
+            {
+              "description": "Enforces policy POL-001",
+              "polarity": "SUPPORTING",
+              "source_tool": "retrieve_fraud_policy"
+            },
+            {
+              "evidence_type": "STEP_UP_CHALLENGE",
+              "description": "Customer failed out-of-band biometric/SMS challenge (Authentication Rejected)",
+              "confidence_weight": 0.95,
+              "polarity": "SUPPORTING",
+              "source_tool": "request_step_up_authentication"
+            }
+          ],
+          "contradicting_evidence": [],
+          "missing_evidence": [
+            "Device hardware fingerprint linkage verification"
+          ],
+          "investigation_status": "ACTIONABLE",
+          "additional_evidence_required": false,
+          "is_defensible": true
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "DETERMINE_NEXT_BEST_ACTION",
+        "description": "Recommended Next Best Action: ESCALATE_TO_FRAUD_ANALYST (Escalate to Fraud Operations & File SAR)",
+        "data": {
+          "action": "ESCALATE_TO_FRAUD_ANALYST",
+          "action_display": "Escalate to Fraud Operations & File SAR",
+          "reason": "High-confidence fraud syndicate detected (Pattern: Proxy/VPN Cluster Anomaly, Amount: $9,200.00). Exceeds regulatory threshold requiring account freezing and FinCEN SAR filing.",
+          "evidence": [
+            "Anonymized network connection (91.240.118.50)",
+            "Customer transactional baseline verified",
+            "Enforces policy POL-001",
+            "Customer failed out-of-band biometric/SMS challenge (Authentication Rejected)"
+          ],
+          "confidence": 0.98,
+          "risk": 0.86,
+          "required_approval": "TIER_2_SENIOR_ANALYST",
+          "approval_display": "Tier-2 Senior AML / Fraud Specialist Sign-off Required",
+          "policy_reference": "POL-005 & POL-006 (Mandatory SAR Filing & High-Value Governance)",
+          "remaining_uncertainty": 0.02,
+          "is_sensitive": true
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "CHECK_POLICY_PERMISSION",
+        "description": "Policy check completed. Requires approval: True (Tier: TIER_2_SENIOR_ANALYST)",
+        "data": {
+          "action": "ESCALATE_TO_FRAUD_ANALYST",
+          "amount": 9200.0,
+          "requires_approval": true,
+          "approval_tier": "TIER_2_SENIOR_ANALYST",
+          "governing_policy": "POL-006",
+          "permitted_to_auto_execute": false
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "REQUEST_HUMAN_APPROVAL",
+        "description": "Queued for human sign-off (TIER_2_SENIOR_ANALYST)",
+        "data": {
+          "approval_id": "APPR-1790249027-5EF6",
+          "case_id": "CASE-1790249027-77A0",
+          "action_type": "ESCALATE_TO_FRAUD_ANALYST",
+          "reason": "High-confidence fraud syndicate detected (Pattern: Proxy/VPN Cluster Anomaly, Amount: $9,200.00). Exceeds regulatory threshold requiring account freezing and FinCEN SAR filing.",
+          "tier": "TIER_2_SENIOR_ANALYST",
+          "status": "AWAITING_REVIEW",
+          "created_at": "2026-09-24T11:23:47Z"
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "EXPLAIN_DECISION",
+        "description": "Generated 8-question structured explainability rationale.",
+        "data": {
+          "what_did_the_agent_find": "Anonymizing VPN/Proxy routing (91.240.118.50) (Identified Typology: Proxy/VPN Cluster Anomaly).",
+          "why_is_this_suspicious": "Geolocation obfuscation masks true originating host network. Cardholder failed active out-of-band biometric/MFA challenge.",
+          "what_evidence_is_missing": "Device hardware fingerprint linkage verification",
+          "why_was_additional_evidence_requested": "Initial graph and anomaly evidence presented elevated risk (0.61) but an unacceptable decision uncertainty (0.26). Under policy POL-004, the agent is prohibited from destructive blocking without verifying identity.",
+          "why_was_this_action_selected": "The action 'Escalate to Fraud Operations & File SAR' was selected because it maximizes loss prevention while minimizing false-positive friction. Final risk score is 0.86 with 98% confidence.",
+          "what_policy_supports_this_action": "POL-005 & POL-006 (Mandatory SAR Filing & High-Value Governance). Threshold criteria and category governance verified against GraphRAG repository.",
+          "what_approval_is_required": "Tier-2 Senior AML / Fraud Specialist Sign-off Required. Requires human analyst sign-off prior to cardholder debit freeze.",
+          "what_uncertainty_remains": "Remaining decision uncertainty is 2.0%. Residual risk is minimal following failed 2FA challenge and multi-hop graph corroboration."
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "UPDATE_CASE_MEMORY",
+        "description": "Persisted case outcome (ALLOWED) into TigerGraph case memory.",
+        "data": {
+          "id": "CASE-1790249027-77A0",
+          "case_id": "CASE-1790249027-77A0",
+          "transaction_id": "TXN-BM-1004",
+          "trigger_reason": "Rapid Pass-Through Chain Exceeding Mandatory SAR Limits",
+          "amount": 9200.0,
+          "fraud_pattern": "Proxy/VPN Cluster Anomaly",
+          "final_risk_score": 0.86,
+          "confidence_score": 0.98,
+          "uncertainty_score": 0.02,
+          "action": "ESCALATE_TO_FRAUD_ANALYST",
+          "actions": [
+            "ESCALATE_TO_FRAUD_ANALYST"
+          ],
+          "outcome": "ALLOWED",
+          "final_resolution": "ALLOWED",
+          "entities": {
+            "device_id": "DEV-WIN-04",
+            "is_emulator": false,
+            "ip_address": "91.240.118.50",
+            "is_vpn": true
+          },
+          "closed_at": "2026-09-24T11:23:47Z",
+          "status": "CLOSED",
+          "_type": "FraudCase"
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "CLOSE_OR_ESCALATE",
+        "description": "Case investigation concluded in 0ms with outcome: ALLOWED.",
+        "data": null
+      }
+    ]
+  },
+  "Evidence": [
+    {
+      "description": "Anonymized network connection (91.240.118.50)",
+      "polarity": "SUPPORTING",
+      "source_tool": "trace_ip_connections"
+    },
+    {
+      "description": "Customer transactional baseline verified",
+      "polarity": "SUPPORTING",
+      "source_tool": "search_customer_history"
+    },
+    {
+      "description": "Enforces policy POL-001",
+      "polarity": "SUPPORTING",
+      "source_tool": "retrieve_fraud_policy"
+    },
+    {
+      "evidence_type": "STEP_UP_CHALLENGE",
+      "description": "Customer failed out-of-band biometric/SMS challenge (Authentication Rejected)",
+      "confidence_weight": 0.95,
+      "polarity": "SUPPORTING",
+      "source_tool": "request_step_up_authentication"
+    }
+  ],
+  "Findings": "Anonymizing VPN/Proxy routing (91.240.118.50) (Identified Typology: Proxy/VPN Cluster Anomaly).",
+  "Fraud pattern": "Proxy/VPN Cluster Anomaly",
+  "Risk": 0.86,
+  "Confidence": 0.98,
+  "Decisions": {
+    "pre_evidence_action": "REQUEST_STEP_UP_AUTHENTICATION",
+    "additional_evidence_dispatched": true,
+    "final_recommended_action": "ESCALATE_TO_FRAUD_ANALYST",
+    "status": "AWAITING_APPROVAL"
+  },
+  "Actions": [
+    "ESCALATE_TO_FRAUD_ANALYST"
+  ],
+  "Required approval": "TIER_2_SENIOR_ANALYST",
+  "Next Best Action before additional evidence": {
+    "action": "REQUEST_STEP_UP_AUTHENTICATION",
+    "action_display": "Request Step-Up Authentication (MFA / Biometric)",
+    "reason": "Elevated fraud risk (0.61) observed with high decision uncertainty (0.26). Policy POL-004 requires active out-of-band identity challenge prior to transaction blocking.",
+    "evidence": [
+      "Anonymized network connection (91.240.118.50)",
+      "Customer transactional baseline verified",
+      "Enforces policy POL-001"
+    ],
+    "confidence": 0.74,
+    "risk": 0.61,
+    "required_approval": "AUTOMATED_EXECUTION",
+    "approval_display": "Automated (Zero Human Latency)",
+    "policy_reference": "POL-004 (Uncertainty-Gated Step-Up Authentication Protocol)",
+    "remaining_uncertainty": 0.26,
+    "is_sensitive": false
+  },
+  "Additional evidence requested": "REQUEST_STEP_UP_AUTHENTICATION",
+  "Result of additional evidence": "FAILED",
+  "Updated Next Best Action": {
+    "action": "ESCALATE_TO_FRAUD_ANALYST",
+    "action_display": "Escalate to Fraud Operations & File SAR",
+    "reason": "High-confidence fraud syndicate detected (Pattern: Proxy/VPN Cluster Anomaly, Amount: $9,200.00). Exceeds regulatory threshold requiring account freezing and FinCEN SAR filing.",
+    "evidence": [
+      "Anonymized network connection (91.240.118.50)",
+      "Customer transactional baseline verified",
+      "Enforces policy POL-001",
+      "Customer failed out-of-band biometric/SMS challenge (Authentication Rejected)"
+    ],
+    "confidence": 0.98,
+    "risk": 0.86,
+    "required_approval": "TIER_2_SENIOR_ANALYST",
+    "approval_display": "Tier-2 Senior AML / Fraud Specialist Sign-off Required",
+    "policy_reference": "POL-005 & POL-006 (Mandatory SAR Filing & High-Value Governance)",
+    "remaining_uncertainty": 0.02,
+    "is_sensitive": true
+  },
+  "Final outcome": "ALLOWED",
+  "Case memory entry": {
+    "case_id": "CASE-1790249027-77A0",
+    "transaction_id": "TXN-BM-1004",
+    "fraud_pattern": "Proxy/VPN Cluster Anomaly",
+    "final_risk_score": 0.86,
+    "confidence_score": 0.98,
+    "resolution": "RESOLVED"
+  },
+  "Explainability": {
+    "what_did_the_agent_find": "Anonymizing VPN/Proxy routing (91.240.118.50) (Identified Typology: Proxy/VPN Cluster Anomaly).",
+    "why_is_this_suspicious": "Geolocation obfuscation masks true originating host network. Cardholder failed active out-of-band biometric/MFA challenge.",
+    "what_evidence_is_missing": "Device hardware fingerprint linkage verification",
+    "why_was_additional_evidence_requested": "Initial graph and anomaly evidence presented elevated risk (0.61) but an unacceptable decision uncertainty (0.26). Under policy POL-004, the agent is prohibited from destructive blocking without verifying identity.",
+    "why_was_this_action_selected": "The action 'Escalate to Fraud Operations & File SAR' was selected because it maximizes loss prevention while minimizing false-positive friction. Final risk score is 0.86 with 98% confidence.",
+    "what_policy_supports_this_action": "POL-005 & POL-006 (Mandatory SAR Filing & High-Value Governance). Threshold criteria and category governance verified against GraphRAG repository.",
+    "what_approval_is_required": "Tier-2 Senior AML / Fraud Specialist Sign-off Required. Requires human analyst sign-off prior to cardholder debit freeze.",
+    "what_uncertainty_remains": "Remaining decision uncertainty is 2.0%. Residual risk is minimal following failed 2FA challenge and multi-hop graph corroboration."
+  }
+}

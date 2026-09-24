@@ -1,0 +1,591 @@
+{
+  "Case": {
+    "benchmark_id": "BENCHMARK-CASE-02",
+    "case_id": "CASE-1790249027-EDEC",
+    "transaction_id": "TXN-BM-1002",
+    "title": "Scenario 2: Ambiguous Risk Resolved via Step-Up Authentication",
+    "trigger_reason": "Unrecognized Device with Elevated Behavioral Velocity",
+    "expected_scenario": "Scenario 2: Uncertain evidence -> agent requests step-up authentication -> receives failed authentication -> increases confidence -> recommends block/escalation"
+  },
+  "Investigation record": {
+    "started_at": "2026-09-24T11:23:47Z",
+    "completed_at": "2026-09-24T11:23:47Z",
+    "execution_time_ms": 2,
+    "steps_executed": 16,
+    "timeline": [
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "TRIGGER",
+        "description": "Received investigation trigger: 'Unrecognized Device with Elevated Behavioral Velocity' for Transaction TXN-BM-1002",
+        "data": null
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "CREATE_CASE",
+        "description": "Opened new fraud investigation case: CASE-1790249027-EDEC",
+        "data": {
+          "id": "CASE-1790249027-EDEC",
+          "case_number": "CASE-1790249027-EDEC",
+          "status": "OPEN",
+          "trigger_reason": "Unrecognized Device with Elevated Behavioral Velocity",
+          "created_at": "2026-09-24T11:23:47Z",
+          "closed_at": null,
+          "final_risk_score": 0.0,
+          "confidence_score": 0.0,
+          "outcome": "PENDING",
+          "_type": "FraudCase"
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "INVESTIGATE",
+        "description": "Retrieved transactional context: Amount=$850.00",
+        "data": {
+          "transaction_id": "TXN-BM-1002",
+          "found": true,
+          "amount": 850.0,
+          "timestamp": "2026-08-12T14:32:00Z",
+          "product_code": "W",
+          "channel": "ONLINE",
+          "anomaly_score": 0.62,
+          "device": {
+            "id": "DEV-UNKNOWN-02",
+            "fingerprint": "fp_221c90ff",
+            "device_type": "MOBILE",
+            "os": "iOS 17.4",
+            "browser": "Mobile Safari",
+            "is_emulator": false,
+            "shared_user_count": 1,
+            "_type": "Device"
+          },
+          "ip": {
+            "id": "IP-COMM-02",
+            "ip_address": "104.28.192.4",
+            "country": "US",
+            "is_vpn": true,
+            "is_tor": false,
+            "risk_score": 0.4,
+            "_type": "IP"
+          },
+          "merchant": {
+            "id": "MERCH-GAME-02",
+            "name": "Global Steam Credits",
+            "category": "Digital Gaming & Vouchers",
+            "risk_tier": "MEDIUM",
+            "_type": "Merchant"
+          },
+          "account": {
+            "id": "ACC-1002",
+            "account_number": "5500-XXXX-XXXX-3341",
+            "balance": 3100.0,
+            "status": "ACTIVE",
+            "_type": "Account"
+          }
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "GATHER_GRAPH_EVIDENCE",
+        "description": "Executed GSQL query trace_device_sharing on Device DEV-UNKNOWN-02: 1 linked customers.",
+        "data": {
+          "device": {
+            "id": "DEV-UNKNOWN-02",
+            "fingerprint": "fp_221c90ff",
+            "device_type": "MOBILE",
+            "os": "iOS 17.4",
+            "browser": "Mobile Safari",
+            "is_emulator": false,
+            "shared_user_count": 1,
+            "_type": "Device"
+          },
+          "distinct_customers": 1,
+          "customers": [
+            {
+              "id": "CUST-1002",
+              "name": "Elena Rostova",
+              "risk_score": 0.2,
+              "kyc_status": "VERIFIED",
+              "total_transactions": 14,
+              "chargeback_count": 0,
+              "_type": "Customer"
+            }
+          ],
+          "transactions": [
+            {
+              "id": "TXN-BM-1002",
+              "amount": 850.0,
+              "timestamp": "2026-08-12T14:32:00Z",
+              "epoch_seconds": 1736077920,
+              "currency": "USD",
+              "channel": "ONLINE",
+              "product_code": "W",
+              "anomaly_score": 0.62,
+              "is_risky": true,
+              "_type": "Transaction"
+            }
+          ],
+          "is_device_farm": false
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "GATHER_GRAPH_EVIDENCE",
+        "description": "Executed GSQL query trace_ip_cluster on IP IP-COMM-02: 1 connected accounts.",
+        "data": {
+          "ip": {
+            "id": "IP-COMM-02",
+            "ip_address": "104.28.192.4",
+            "country": "US",
+            "is_vpn": true,
+            "is_tor": false,
+            "risk_score": 0.4,
+            "_type": "IP"
+          },
+          "txn_count": 1,
+          "customer_count": 1,
+          "total_volume": 850.0,
+          "customers": [
+            {
+              "id": "CUST-1002",
+              "name": "Elena Rostova",
+              "risk_score": 0.2,
+              "kyc_status": "VERIFIED",
+              "total_transactions": 14,
+              "chargeback_count": 0,
+              "_type": "Customer"
+            }
+          ],
+          "transactions": [
+            {
+              "id": "TXN-BM-1002",
+              "amount": 850.0,
+              "timestamp": "2026-08-12T14:32:00Z",
+              "epoch_seconds": 1736077920,
+              "currency": "USD",
+              "channel": "ONLINE",
+              "product_code": "W",
+              "anomaly_score": 0.62,
+              "is_risky": true,
+              "_type": "Transaction"
+            }
+          ],
+          "is_proxy_cluster": true
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "RETRIEVE_TRANSACTION_HISTORY",
+        "description": "Checked historical baseline for Customer CUST-1002: Avg spend $850.00",
+        "data": {
+          "customer_id": "CUST-1002",
+          "found": true,
+          "name": "Elena Rostova",
+          "kyc_status": "VERIFIED",
+          "account_count": 1,
+          "total_historical_txns": 1,
+          "total_historical_spend": 850.0,
+          "average_transaction_amount": 850.0,
+          "chargeback_count": 0,
+          "customer_risk_rating": 0.2
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "IDENTIFY_FRAUD_PATTERN",
+        "description": "Graph pattern detection identified: 'Proxy/VPN Cluster Anomaly' (1 patterns detected).",
+        "data": {
+          "patterns_detected": [
+            {
+              "name": "Proxy/VPN Cluster Anomaly",
+              "severity": "MEDIUM",
+              "evidence": "IP cluster contains 1 accounts routing high volume"
+            }
+          ],
+          "primary_pattern": "Proxy/VPN Cluster Anomaly",
+          "pattern_count": 1
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "RETRIEVE_POLICY_GRAPHRAG",
+        "description": "GraphRAG retrieved 3 governing policies and typology 'Account Takeover (ATO)'",
+        "data": [
+          {
+            "policy_code": "POL-001",
+            "title": "High-Velocity & Off-Hour Volume Spike Policy",
+            "category": "Velocity Controls",
+            "summary": "Mandates automated transaction throttling or step-up authentication when an account exhibits >=3 transactions within 60 minutes or a 300% deviation from 30-day baseline spend.",
+            "threshold_rules": "txn_count >= 3 in 1hr OR amount_deviation >= 3.0",
+            "mandatory_approval": false,
+            "applicable_actions": [
+              "REQUEST_STEP_UP_AUTHENTICATION",
+              "MONITOR_ACCOUNT",
+              "BLOCK_TRANSACTION"
+            ],
+            "regulatory_reference": "FFIEC Retail Payment Systems Handbook \u00a74.2"
+          },
+          {
+            "policy_code": "POL-002",
+            "title": "Device Multi-Accounting & Farm Fingerprint Policy",
+            "category": "Device Intelligence",
+            "summary": "Any hardware device fingerprint associated with 3 or more distinct customer profiles or flagged as an emulated virtual machine must be subjected to biometric step-up verification or immediate containment.",
+            "threshold_rules": "distinct_customers >= 3 OR is_emulator == true",
+            "mandatory_approval": false,
+            "applicable_actions": [
+              "BLOCK_TRANSACTION",
+              "WARN_CUSTOMER",
+              "REQUEST_STEP_UP_AUTHENTICATION"
+            ],
+            "regulatory_reference": "NIST SP 800-63B Authenticator Assurance Level 2 (AAL2)"
+          },
+          {
+            "policy_code": "POL-003",
+            "title": "Money Mule Pass-Through Network Policy",
+            "category": "Anti-Money Laundering (AML)",
+            "summary": "Accounts participating in rapid pass-through funds routing (hop count >= 3 within 24 hours of receipt) require immediate temporary debit freeze and mandatory escalation to Fraud / AML operations.",
+            "threshold_rules": "mule_hops >= 3 AND holding_period_hours < 24",
+            "mandatory_approval": true,
+            "applicable_actions": [
+              "BLOCK_TRANSACTION",
+              "ESCALATE_TO_FRAUD_ANALYST",
+              "FILE_REGULATORY_REPORT"
+            ],
+            "regulatory_reference": "FinCEN Advisory FIN-2020-A003 on Money Mules"
+          }
+        ]
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "RETRIEVE_SIMILAR_CASES",
+        "description": "Retrieved 3 structurally similar historical cases from case memory.",
+        "data": [
+          {
+            "case_id": "HIST-CASE-104",
+            "case_number": "HIST-CASE-104",
+            "transaction_id": "TXN-HIST-004",
+            "day_offset": 84,
+            "trigger_reason": "Velocity Burst at Electronics Merchant",
+            "amount": 1420.0,
+            "fraud_pattern": "Card Testing & Velocity Burst",
+            "final_risk_score": 0.81,
+            "confidence_score": 0.85,
+            "uncertainty_score": 0.15,
+            "action": "BLOCK_TRANSACTION",
+            "actions": [
+              "BLOCK_TRANSACTION"
+            ],
+            "outcome": "CONFIRMED_FRAUD",
+            "final_resolution": "CONFIRMED_FRAUD",
+            "entities": {
+              "customer_id": "CUST-H104",
+              "account_id": "ACC-H104",
+              "device_id": "DEV-WEB-104",
+              "ip_address": "45.154.255.8",
+              "is_emulator": false,
+              "is_vpn": true
+            },
+            "id": "HIST-CASE-104",
+            "_type": "FraudCase",
+            "similarity_score": 0.51,
+            "similarity_pct": 51,
+            "relevance_explanation": "Historical outcome was CONFIRMED_FRAUD with action 'BLOCK_TRANSACTION'"
+          },
+          {
+            "case_id": "HIST-CASE-103",
+            "case_number": "HIST-CASE-103",
+            "transaction_id": "TXN-HIST-003",
+            "day_offset": 58,
+            "trigger_reason": "High-Value Transaction off-baseline",
+            "amount": 620.0,
+            "fraud_pattern": "Account Takeover",
+            "final_risk_score": 0.22,
+            "confidence_score": 0.88,
+            "uncertainty_score": 0.12,
+            "action": "ALLOW_TRANSACTION",
+            "actions": [
+              "ALLOW_TRANSACTION"
+            ],
+            "outcome": "BENIGN_CUSTOMER_ACTIVITY",
+            "final_resolution": "BENIGN_CUSTOMER_ACTIVITY",
+            "entities": {
+              "customer_id": "CUST-H103",
+              "account_id": "ACC-H103",
+              "device_id": "DEV-MOBILE-103",
+              "ip_address": "73.189.44.12",
+              "is_emulator": false,
+              "is_vpn": false
+            },
+            "id": "HIST-CASE-103",
+            "_type": "FraudCase",
+            "similarity_score": 0.47,
+            "similarity_pct": 47,
+            "relevance_explanation": "Historical outcome was BENIGN_CUSTOMER_ACTIVITY with action 'ALLOW_TRANSACTION'"
+          },
+          {
+            "case_id": "HIST-CASE-105",
+            "case_number": "HIST-CASE-105",
+            "transaction_id": "TXN-HIST-005",
+            "day_offset": 105,
+            "trigger_reason": "Step-up Challenge Passed - Legitimate Travel",
+            "amount": 950.0,
+            "fraud_pattern": "Account Takeover",
+            "final_risk_score": 0.18,
+            "confidence_score": 0.94,
+            "uncertainty_score": 0.06,
+            "action": "ALLOW_TRANSACTION",
+            "actions": [
+              "ALLOW_TRANSACTION"
+            ],
+            "outcome": "BENIGN_CUSTOMER_ACTIVITY",
+            "final_resolution": "BENIGN_CUSTOMER_ACTIVITY",
+            "entities": {
+              "customer_id": "CUST-H105",
+              "account_id": "ACC-H105",
+              "device_id": "DEV-TABLET-105",
+              "ip_address": "151.101.65.140",
+              "is_emulator": false,
+              "is_vpn": false
+            },
+            "id": "HIST-CASE-105",
+            "_type": "FraudCase",
+            "similarity_score": 0.47,
+            "similarity_pct": 47,
+            "relevance_explanation": "Historical outcome was BENIGN_CUSTOMER_ACTIVITY with action 'ALLOW_TRANSACTION'"
+          }
+        ]
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "ASSESS_UNCERTAINTY",
+        "description": "Risk Level: MEDIUM (Score: 0.44) | Confidence: 0.66 | Uncertainty: 0.34 | Additional Evidence Required: False",
+        "data": {
+          "risk_score": 0.44,
+          "risk_level": "MEDIUM",
+          "confidence_score": 0.66,
+          "uncertainty_score": 0.34,
+          "breakdown": {
+            "graph_support_pct": 35.0,
+            "historical_support_pct": 33.3,
+            "signal_strength_pct": 62.0,
+            "evidence_coverage_pct": 75.0
+          },
+          "evidence_count": 3,
+          "supporting_evidence": [
+            {
+              "description": "Anonymized network connection (104.28.192.4)",
+              "polarity": "SUPPORTING",
+              "source_tool": "trace_ip_connections"
+            },
+            {
+              "description": "Customer transactional baseline verified",
+              "polarity": "SUPPORTING",
+              "source_tool": "search_customer_history"
+            },
+            {
+              "description": "Enforces policy POL-001",
+              "polarity": "SUPPORTING",
+              "source_tool": "retrieve_fraud_policy"
+            }
+          ],
+          "contradicting_evidence": [],
+          "missing_evidence": [
+            "Device hardware fingerprint linkage verification",
+            "Out-of-band Step-Up MFA / Biometric verification"
+          ],
+          "investigation_status": "NEEDS_EVIDENCE",
+          "additional_evidence_required": false,
+          "is_defensible": false
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "DETERMINE_NEXT_BEST_ACTION",
+        "description": "Recommended Next Best Action: MONITOR_ACCOUNT (Allow with Enhanced Account Monitoring & Customer Ping)",
+        "data": {
+          "action": "MONITOR_ACCOUNT",
+          "action_display": "Allow with Enhanced Account Monitoring & Customer Ping",
+          "reason": "Moderate anomaly detected (Risk 0.44) without definitive evidence of account takeover or device farming. Enact real-time account telemetry and alert customer.",
+          "evidence": [
+            "Anonymized network connection (104.28.192.4)",
+            "Customer transactional baseline verified",
+            "Enforces policy POL-001"
+          ],
+          "confidence": 0.66,
+          "risk": 0.44,
+          "required_approval": "AUTOMATED_EXECUTION",
+          "approval_display": "Automated Policy Action",
+          "policy_reference": "POL-001 (High-Velocity & Volume Anomaly Policy)",
+          "remaining_uncertainty": 0.34,
+          "is_sensitive": false
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "CHECK_POLICY_PERMISSION",
+        "description": "Policy check completed. Requires approval: False (Tier: AUTOMATED_EXECUTION)",
+        "data": {
+          "action": "MONITOR_ACCOUNT",
+          "amount": 850.0,
+          "requires_approval": false,
+          "approval_tier": "AUTOMATED_EXECUTION",
+          "governing_policy": "POL-001",
+          "permitted_to_auto_execute": true
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "EXECUTE_ACTION",
+        "description": "Executed action: MONITOR_ACCOUNT",
+        "data": {
+          "id": "ACT-1790249027-83DC",
+          "action_type": "MONITOR_ACCOUNT",
+          "reason": "Moderate anomaly detected (Risk 0.44) without definitive evidence of account takeover or device farming. Enact real-time account telemetry and alert customer.",
+          "approval_tier": "AUTOMATED_EXECUTION",
+          "executed_by": "FraudGraph_Autonomous_Agent",
+          "executed_at": "2026-09-24T11:23:47Z",
+          "status": "COMPLETED",
+          "policy_reference": "POL-001",
+          "_type": "Action"
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "EXPLAIN_DECISION",
+        "description": "Generated 8-question structured explainability rationale.",
+        "data": {
+          "what_did_the_agent_find": "Anonymizing VPN/Proxy routing (104.28.192.4) (Identified Typology: Proxy/VPN Cluster Anomaly).",
+          "why_is_this_suspicious": "Geolocation obfuscation masks true originating host network.",
+          "what_evidence_is_missing": "Device hardware fingerprint linkage verification; Out-of-band Step-Up MFA / Biometric verification",
+          "why_was_additional_evidence_requested": "Initial evidence and historical case precedents provided sufficient confidence to act defensibly without requiring additional verification.",
+          "why_was_this_action_selected": "The action 'Allow with Enhanced Account Monitoring & Customer Ping' was selected because it maximizes loss prevention while minimizing false-positive friction. Final risk score is 0.44 with 66% confidence.",
+          "what_policy_supports_this_action": "POL-001 (High-Velocity & Volume Anomaly Policy). Threshold criteria and category governance verified against GraphRAG repository.",
+          "what_approval_is_required": "Automated Policy Action. Permitted for immediate automated execution without human bottleneck.",
+          "what_uncertainty_remains": "Remaining decision uncertainty is 34.0%. Ongoing behavioral monitoring is established to mitigate residual risk."
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "UPDATE_CASE_MEMORY",
+        "description": "Persisted case outcome (MONITORED) into TigerGraph case memory.",
+        "data": {
+          "id": "CASE-1790249027-EDEC",
+          "case_id": "CASE-1790249027-EDEC",
+          "transaction_id": "TXN-BM-1002",
+          "trigger_reason": "Unrecognized Device with Elevated Behavioral Velocity",
+          "amount": 850.0,
+          "fraud_pattern": "Proxy/VPN Cluster Anomaly",
+          "final_risk_score": 0.44,
+          "confidence_score": 0.66,
+          "uncertainty_score": 0.34,
+          "action": "MONITOR_ACCOUNT",
+          "actions": [
+            "MONITOR_ACCOUNT"
+          ],
+          "outcome": "MONITORED",
+          "final_resolution": "MONITORED",
+          "entities": {
+            "device_id": "DEV-UNKNOWN-02",
+            "is_emulator": false,
+            "ip_address": "104.28.192.4",
+            "is_vpn": true
+          },
+          "closed_at": "2026-09-24T11:23:47Z",
+          "status": "CLOSED",
+          "_type": "FraudCase"
+        }
+      },
+      {
+        "timestamp": "2026-09-24T11:23:47Z",
+        "step": "CLOSE_OR_ESCALATE",
+        "description": "Case investigation concluded in 2ms with outcome: MONITORED.",
+        "data": null
+      }
+    ]
+  },
+  "Evidence": [
+    {
+      "description": "Anonymized network connection (104.28.192.4)",
+      "polarity": "SUPPORTING",
+      "source_tool": "trace_ip_connections"
+    },
+    {
+      "description": "Customer transactional baseline verified",
+      "polarity": "SUPPORTING",
+      "source_tool": "search_customer_history"
+    },
+    {
+      "description": "Enforces policy POL-001",
+      "polarity": "SUPPORTING",
+      "source_tool": "retrieve_fraud_policy"
+    }
+  ],
+  "Findings": "Anonymizing VPN/Proxy routing (104.28.192.4) (Identified Typology: Proxy/VPN Cluster Anomaly).",
+  "Fraud pattern": "Proxy/VPN Cluster Anomaly",
+  "Risk": 0.44,
+  "Confidence": 0.66,
+  "Decisions": {
+    "pre_evidence_action": "MONITOR_ACCOUNT",
+    "additional_evidence_dispatched": false,
+    "final_recommended_action": "MONITOR_ACCOUNT",
+    "status": "RESOLVED"
+  },
+  "Actions": [
+    "MONITOR_ACCOUNT"
+  ],
+  "Required approval": "AUTOMATED_EXECUTION",
+  "Next Best Action before additional evidence": {
+    "action": "MONITOR_ACCOUNT",
+    "action_display": "Allow with Enhanced Account Monitoring & Customer Ping",
+    "reason": "Moderate anomaly detected (Risk 0.44) without definitive evidence of account takeover or device farming. Enact real-time account telemetry and alert customer.",
+    "evidence": [
+      "Anonymized network connection (104.28.192.4)",
+      "Customer transactional baseline verified",
+      "Enforces policy POL-001"
+    ],
+    "confidence": 0.66,
+    "risk": 0.44,
+    "required_approval": "AUTOMATED_EXECUTION",
+    "approval_display": "Automated Policy Action",
+    "policy_reference": "POL-001 (High-Velocity & Volume Anomaly Policy)",
+    "remaining_uncertainty": 0.34,
+    "is_sensitive": false
+  },
+  "Additional evidence requested": null,
+  "Result of additional evidence": null,
+  "Updated Next Best Action": {
+    "action": "MONITOR_ACCOUNT",
+    "action_display": "Allow with Enhanced Account Monitoring & Customer Ping",
+    "reason": "Moderate anomaly detected (Risk 0.44) without definitive evidence of account takeover or device farming. Enact real-time account telemetry and alert customer.",
+    "evidence": [
+      "Anonymized network connection (104.28.192.4)",
+      "Customer transactional baseline verified",
+      "Enforces policy POL-001"
+    ],
+    "confidence": 0.66,
+    "risk": 0.44,
+    "required_approval": "AUTOMATED_EXECUTION",
+    "approval_display": "Automated Policy Action",
+    "policy_reference": "POL-001 (High-Velocity & Volume Anomaly Policy)",
+    "remaining_uncertainty": 0.34,
+    "is_sensitive": false
+  },
+  "Final outcome": "MONITORED",
+  "Case memory entry": {
+    "case_id": "CASE-1790249027-EDEC",
+    "transaction_id": "TXN-BM-1002",
+    "fraud_pattern": "Proxy/VPN Cluster Anomaly",
+    "final_risk_score": 0.44,
+    "confidence_score": 0.66,
+    "resolution": "RESOLVED"
+  },
+  "Explainability": {
+    "what_did_the_agent_find": "Anonymizing VPN/Proxy routing (104.28.192.4) (Identified Typology: Proxy/VPN Cluster Anomaly).",
+    "why_is_this_suspicious": "Geolocation obfuscation masks true originating host network.",
+    "what_evidence_is_missing": "Device hardware fingerprint linkage verification; Out-of-band Step-Up MFA / Biometric verification",
+    "why_was_additional_evidence_requested": "Initial evidence and historical case precedents provided sufficient confidence to act defensibly without requiring additional verification.",
+    "why_was_this_action_selected": "The action 'Allow with Enhanced Account Monitoring & Customer Ping' was selected because it maximizes loss prevention while minimizing false-positive friction. Final risk score is 0.44 with 66% confidence.",
+    "what_policy_supports_this_action": "POL-001 (High-Velocity & Volume Anomaly Policy). Threshold criteria and category governance verified against GraphRAG repository.",
+    "what_approval_is_required": "Automated Policy Action. Permitted for immediate automated execution without human bottleneck.",
+    "what_uncertainty_remains": "Remaining decision uncertainty is 34.0%. Ongoing behavioral monitoring is established to mitigate residual risk."
+  }
+}

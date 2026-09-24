@@ -1,0 +1,170 @@
+// TigerGraph GSQL Schema for FraudGraph Agent
+// HHGOA Hackathon - Production Grade Fraud Knowledge Graph
+
+DROP GRAPH FraudGraph;
+DROP SCHEMA_CHANGE JOB ALL;
+
+// 1. VERTEX DEFINITIONS
+CREATE VERTEX Customer(
+    PRIMARY_ID id STRING,
+    name STRING,
+    risk_score DOUBLE,
+    kyc_status STRING,
+    created_at STRING,
+    total_transactions INT,
+    chargeback_count INT
+) WITH STATS="OUTDEGREE_BY_EDGETYPE";
+
+CREATE VERTEX Account(
+    PRIMARY_ID id STRING,
+    account_number STRING,
+    balance DOUBLE,
+    status STRING,
+    opened_date STRING,
+    account_type STRING
+) WITH STATS="OUTDEGREE_BY_EDGETYPE";
+
+CREATE VERTEX Transaction(
+    PRIMARY_ID id STRING,
+    amount DOUBLE,
+    timestamp STRING,
+    epoch_seconds INT,
+    currency STRING,
+    channel STRING,
+    product_code STRING,
+    dist1 DOUBLE,
+    is_risky BOOL,
+    anomaly_score DOUBLE
+) WITH STATS="OUTDEGREE_BY_EDGETYPE";
+
+CREATE VERTEX Device(
+    PRIMARY_ID id STRING,
+    fingerprint STRING,
+    device_type STRING,
+    os STRING,
+    browser STRING,
+    is_emulator BOOL,
+    shared_user_count INT
+) WITH STATS="OUTDEGREE_BY_EDGETYPE";
+
+CREATE VERTEX IP(
+    PRIMARY_ID id STRING,
+    ip_address STRING,
+    country STRING,
+    region STRING,
+    is_vpn BOOL,
+    is_tor BOOL,
+    is_datacenter BOOL,
+    risk_score DOUBLE
+) WITH STATS="OUTDEGREE_BY_EDGETYPE";
+
+CREATE VERTEX Merchant(
+    PRIMARY_ID id STRING,
+    name STRING,
+    category STRING,
+    risk_tier STRING,
+    mcc_code STRING,
+    chargeback_ratio DOUBLE
+) WITH STATS="OUTDEGREE_BY_EDGETYPE";
+
+CREATE VERTEX Email(
+    PRIMARY_ID id STRING,
+    email_address STRING,
+    domain STRING,
+    is_disposable BOOL,
+    domain_age_days INT
+) WITH STATS="OUTDEGREE_BY_EDGETYPE";
+
+CREATE VERTEX Phone(
+    PRIMARY_ID id STRING,
+    phone_number STRING,
+    carrier STRING,
+    is_voip BOOL,
+    country_code STRING
+) WITH STATS="OUTDEGREE_BY_EDGETYPE";
+
+CREATE VERTEX FraudCase(
+    PRIMARY_ID id STRING,
+    case_number STRING,
+    status STRING,
+    trigger_reason STRING,
+    created_at STRING,
+    closed_at STRING,
+    final_risk_score DOUBLE,
+    confidence_score DOUBLE,
+    outcome STRING
+) WITH STATS="OUTDEGREE_BY_EDGETYPE";
+
+CREATE VERTEX FraudPattern(
+    PRIMARY_ID id STRING,
+    pattern_name STRING,
+    severity STRING,
+    detection_rule STRING,
+    typology_category STRING
+) WITH STATS="OUTDEGREE_BY_EDGETYPE";
+
+CREATE VERTEX Evidence(
+    PRIMARY_ID id STRING,
+    evidence_type STRING,
+    description STRING,
+    confidence_weight DOUBLE,
+    polarity STRING, // "SUPPORTING" or "CONTRADICTING"
+    source_tool STRING,
+    discovered_at STRING
+) WITH STATS="OUTDEGREE_BY_EDGETYPE";
+
+CREATE VERTEX Action(
+    PRIMARY_ID id STRING,
+    action_type STRING,
+    reason STRING,
+    approval_tier STRING,
+    executed_by STRING,
+    executed_at STRING,
+    status STRING,
+    policy_reference STRING
+) WITH STATS="OUTDEGREE_BY_EDGETYPE";
+
+CREATE VERTEX Policy(
+    PRIMARY_ID id STRING,
+    policy_code STRING,
+    title STRING,
+    threshold_rules STRING,
+    mandatory_approval BOOL,
+    category STRING
+) WITH STATS="OUTDEGREE_BY_EDGETYPE";
+
+CREATE VERTEX Investigation(
+    PRIMARY_ID id STRING,
+    agent_name STRING,
+    steps_count INT,
+    runtime_ms INT,
+    started_at STRING,
+    completed_at STRING,
+    outcome STRING
+) WITH STATS="OUTDEGREE_BY_EDGETYPE";
+
+// 2. UNDIRECTED AND DIRECTED EDGES
+CREATE UNDIRECTED EDGE owns(FROM Customer, TO Account);
+CREATE UNDIRECTED EDGE makes(FROM Account, TO Transaction);
+CREATE UNDIRECTED EDGE uses(FROM Transaction, TO Device);
+CREATE UNDIRECTED EDGE originates_from(FROM Transaction, TO IP);
+CREATE UNDIRECTED EDGE occurs_at(FROM Transaction, TO Merchant);
+CREATE UNDIRECTED EDGE customer_uses_device(FROM Customer, TO Device);
+CREATE UNDIRECTED EDGE associated_with_email(FROM Customer, TO Email);
+CREATE UNDIRECTED EDGE associated_with_phone(FROM Customer, TO Phone);
+CREATE UNDIRECTED EDGE investigated_by(FROM Transaction, TO FraudCase);
+CREATE UNDIRECTED EDGE contains(FROM FraudCase, TO Evidence);
+CREATE UNDIRECTED EDGE identified_as(FROM FraudCase, TO FraudPattern);
+CREATE UNDIRECTED EDGE resulted_in(FROM FraudCase, TO Action);
+CREATE UNDIRECTED EDGE similar_to(FROM FraudCase, TO FraudCase, similarity_score DOUBLE);
+CREATE UNDIRECTED EDGE logged_investigation(FROM FraudCase, TO Investigation);
+CREATE UNDIRECTED EDGE enforces_policy(FROM Action, TO Policy);
+
+// 3. GRAPH DEFINITION
+CREATE GRAPH FraudGraph(
+    Customer, Account, Transaction, Device, IP, Merchant, Email, Phone, 
+    FraudCase, FraudPattern, Evidence, Action, Policy, Investigation,
+    owns, makes, uses, originates_from, occurs_at, customer_uses_device, 
+    associated_with_email, associated_with_phone, investigated_by, 
+    contains, identified_as, resulted_in, similar_to, logged_investigation, enforces_policy
+);
