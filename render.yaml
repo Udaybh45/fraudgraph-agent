@@ -29,7 +29,6 @@ services:
   - type: web
     name: fraudgraph-frontend
     env: static
-    region: oregon
     branch: main
     rootDir: frontend
     buildCommand: npm ci && npm run build
