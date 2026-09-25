@@ -1,0 +1,286 @@
+{
+  "case_id": "HHG-020",
+  "Case": {
+    "case_id": "CASE-HHG-020",
+    "hackathon_case_id": "HHG-020",
+    "transaction_id": "TXN-HHG-020",
+    "trigger_reason": "Mule Account Flagged - Receives Only Never Spends",
+    "amount": 2200.0,
+    "fraud_pattern": "Money Mule Pass-Through Syndicate"
+  },
+  "Investigation record": {
+    "agent": "FraudGraph Autonomous Investigation Agent",
+    "framework": "AutoGen Multi-Tool Orchestration",
+    "llm": "Google Gemini 1.5 Pro",
+    "graph_db": "TigerGraph Savanna",
+    "started_at": "2026-09-25T07:00:00Z",
+    "completed_at": "2026-09-25T07:00:00Z",
+    "execution_time_ms": 291,
+    "steps_executed": 17,
+    "timeline": [
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "TRIGGER",
+        "description": "Received investigation trigger: 'Mule Account Flagged - Receives Only Never Spends' for Transaction TXN-HHG-020",
+        "data": null
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "CREATE_CASE",
+        "description": "Opened new fraud investigation case: CASE-HHG-020",
+        "data": {
+          "id": "CASE-HHG-020",
+          "status": "OPEN",
+          "trigger_reason": "Mule Account Flagged - Receives Only Never Spends",
+          "created_at": "2026-09-25T07:00:00Z"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "INVESTIGATE",
+        "description": "Retrieved transactional context: Amount=$2,200.00",
+        "data": {
+          "transaction_id": "TXN-HHG-020",
+          "found": true,
+          "amount": 2200.0,
+          "anomaly_score": 0.82,
+          "device": {
+            "id": "DEV-WIN-20",
+            "fingerprint": "fp_win11_220",
+            "device_type": "DESKTOP",
+            "os": "Windows 11",
+            "browser": "Edge 124",
+            "is_emulator": false,
+            "shared_user_count": 2
+          },
+          "ip": {
+            "id": "IP-VPN-20",
+            "ip_address": "91.240.118.60",
+            "country": "NL",
+            "is_vpn": true,
+            "is_tor": false,
+            "risk_score": 0.84
+          }
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "GATHER_GRAPH_EVIDENCE",
+        "description": "Executed TigerGraph GSQL trace_device_sharing \u2014 device shared with 2 accounts",
+        "data": {
+          "id": "DEV-WIN-20",
+          "fingerprint": "fp_win11_220",
+          "device_type": "DESKTOP",
+          "os": "Windows 11",
+          "browser": "Edge 124",
+          "is_emulator": false,
+          "shared_user_count": 2
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "GATHER_GRAPH_EVIDENCE",
+        "description": "Executed TigerGraph GSQL trace_ip_cluster \u2014 IP risk score 0.84",
+        "data": {
+          "id": "IP-VPN-20",
+          "ip_address": "91.240.118.60",
+          "country": "NL",
+          "is_vpn": true,
+          "is_tor": false,
+          "risk_score": 0.84
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "IDENTIFY_FRAUD_PATTERN",
+        "description": "TigerGraph graph pattern detection identified: 'Money Mule Pass-Through Syndicate'",
+        "data": {
+          "primary_pattern": "Money Mule Pass-Through Syndicate"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "RETRIEVE_POLICY_GRAPHRAG",
+        "description": "GraphRAG retrieved 2 governing policies for pattern 'Money Mule Pass-Through Syndicate'",
+        "data": [
+          {
+            "policy_code": "AML-004",
+            "title": "FinCEN SAR Mandatory Filing Policy",
+            "category": "AML Compliance"
+          },
+          {
+            "policy_code": "FRD-009",
+            "title": "VASP Transaction Escalation Policy",
+            "category": "High-Risk Merchant"
+          }
+        ]
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "ASSESS_UNCERTAINTY",
+        "description": "Risk=0.89 | Confidence=0.87 | Uncertainty=0.13",
+        "data": {
+          "risk_score": 0.89,
+          "confidence_score": 0.87,
+          "uncertainty_score": 0.13,
+          "additional_evidence_required": true
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "REQUEST_ADDITIONAL_EVIDENCE",
+        "description": "Uncertainty exceeds threshold. Dispatching Step-Up Authentication challenge via TigerGraph action vertex.",
+        "data": null
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "RECEIVE_RESULT",
+        "description": "Step-up authentication result: FAILED",
+        "data": {
+          "outcome": "FAILED"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "REASSESS_RISK",
+        "description": "Post step-up \u2014 Risk=0.89 | Confidence=0.87",
+        "data": {
+          "risk_score": 0.89,
+          "confidence_score": 0.87
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "DETERMINE_NEXT_BEST_ACTION",
+        "description": "Recommended Next Best Action: BLOCK_TRANSACTION",
+        "data": {
+          "action": "BLOCK_TRANSACTION"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "CHECK_POLICY_PERMISSION",
+        "description": "Policy check complete. Approval tier: AUTOMATED_EXECUTION",
+        "data": {
+          "approval_tier": "AUTOMATED_EXECUTION"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "EXECUTE_ACTION",
+        "description": "Executed action: BLOCK_TRANSACTION",
+        "data": {
+          "action_type": "BLOCK_TRANSACTION",
+          "executed_by": "FraudGraph_Autonomous_Agent",
+          "approval_tier": "AUTOMATED_EXECUTION"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "EXPLAIN_DECISION",
+        "description": "Generated 8-question structured explainability rationale (XAI matrix).",
+        "data": null
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "UPDATE_CASE_MEMORY",
+        "description": "Persisted case outcome (BLOCKED) into TigerGraph FraudCase vertex & case memory.",
+        "data": {
+          "case_id": "CASE-HHG-020",
+          "outcome": "BLOCKED"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "CLOSE_OR_ESCALATE",
+        "description": "Case investigation concluded with outcome: BLOCKED.",
+        "data": null
+      }
+    ]
+  },
+  "Evidence": [
+    {
+      "evidence_type": "MULE_BEHAVIOR",
+      "description": "Account receives large deposits then immediately transfers out \u2014 0 retail spend in 6 months",
+      "confidence_weight": 0.9,
+      "polarity": "SUPPORTING",
+      "source_tool": "TigerGraph_GSQL_Query",
+      "discovered_at": "2026-09-25T07:00:00Z"
+    },
+    {
+      "evidence_type": "ANONYMIZED_IP",
+      "description": "Netherlands VPN exit node \u2014 risk score 0.84",
+      "confidence_weight": 0.84,
+      "polarity": "SUPPORTING",
+      "source_tool": "TigerGraph_GSQL_Query",
+      "discovered_at": "2026-09-25T07:00:00Z"
+    },
+    {
+      "evidence_type": "DEVICE_MULTI_ACCOUNTING",
+      "description": "Device shared with 2 accounts \u2014 both exhibiting mule behavior",
+      "confidence_weight": 0.85,
+      "polarity": "SUPPORTING",
+      "source_tool": "TigerGraph_GSQL_Query",
+      "discovered_at": "2026-09-25T07:00:00Z"
+    },
+    {
+      "evidence_type": "STEP_UP_FAILED",
+      "description": "Challenge sent \u2014 no response within window \u2014 automated pass-through suspected",
+      "confidence_weight": 0.87,
+      "polarity": "SUPPORTING",
+      "source_tool": "TigerGraph_GSQL_Query",
+      "discovered_at": "2026-09-25T07:00:00Z"
+    }
+  ],
+  "Findings": "The FraudGraph agent executed a 17-step autonomous investigation against TigerGraph's knowledge graph. GSQL subgraph traversal detected 'Money Mule Pass-Through Syndicate' with 4 corroborating evidence signals. The anomaly score of 0.82 triggered a step-up authentication challenge, which returned 'FAILED', updating the agent's posterior risk estimate to 0.89 (confidence: 0.87).",
+  "Fraud pattern": "Money Mule Pass-Through Syndicate",
+  "Risk": 0.89,
+  "Confidence": 0.87,
+  "Uncertainty": 0.13,
+  "Decisions": {
+    "pre_evidence_action": "BLOCK_TRANSACTION",
+    "additional_evidence_dispatched": true,
+    "step_up_result": "FAILED",
+    "final_recommended_action": "BLOCK_TRANSACTION",
+    "status": "RESOLVED"
+  },
+  "Actions": [
+    "BLOCK_TRANSACTION"
+  ],
+  "Required approval": "AUTOMATED_EXECUTION",
+  "Next Best Action before additional evidence": {
+    "action": "BLOCK_TRANSACTION",
+    "reason": "Initial graph risk score 0.89 with uncertainty 0.13 \u2014 evidence pending",
+    "risk_level": "HIGH"
+  },
+  "Additional evidence requested": "REQUEST_STEP_UP_AUTHENTICATION",
+  "Result of additional evidence": "FAILED",
+  "Updated Next Best Action": {
+    "action": "BLOCK_TRANSACTION",
+    "reason": "Post step-up 'FAILED' \u2014 risk confirmed at 0.89. TigerGraph graph traversal identified 4 evidence signals. Policy 'AML-004' mandates BLOCK_TRANSACTION for Money Mule Pass-Through Syndicate.",
+    "action_display": "Block Transaction",
+    "risk_level": "HIGH",
+    "required_approval": "AUTOMATED_EXECUTION"
+  },
+  "Final outcome": "BLOCKED",
+  "Case memory entry": {
+    "case_id": "CASE-HHG-020",
+    "transaction_id": "TXN-HHG-020",
+    "fraud_pattern": "Money Mule Pass-Through Syndicate",
+    "final_risk_score": 0.89,
+    "confidence_score": 0.87,
+    "uncertainty_score": 0.13,
+    "resolution": "RESOLVED",
+    "stored_in": "TigerGraph FraudCase Vertex + Case Memory Vector Store"
+  },
+  "Explainability": {
+    "what_triggered_the_investigation": "Mule Account Flagged - Receives Only Never Spends",
+    "what_did_the_agent_find": "TigerGraph GSQL graph traversal detected 'Money Mule Pass-Through Syndicate' \u2014 4 evidence signals corroborate fraud with risk score 0.89.",
+    "why_was_additional_evidence_requested": "Initial uncertainty (0.13) exceeded the 0.10 defensibility threshold \u2014 agent dispatched step-up authentication to reduce uncertainty.",
+    "how_did_the_additional_evidence_change_assessment": "Step-up result 'FAILED' increased posterior risk to 0.89 and confirmed fraud.",
+    "what_action_was_recommended": "BLOCK_TRANSACTION",
+    "why_was_this_action_chosen": "Policy 'AML-004' (FinCEN SAR Mandatory Filing Policy) mandates BLOCK_TRANSACTION when risk \u2265 threshold and step-up returns 'FAILED'.",
+    "what_approval_was_required": "AUTOMATED_EXECUTION",
+    "what_is_the_business_impact": "Prevented estimated $3300 in fraud losses and potential regulatory fines."
+  }
+}

@@ -1,0 +1,273 @@
+{
+  "case_id": "HHG-010",
+  "Case": {
+    "case_id": "CASE-HHG-010",
+    "hackathon_case_id": "HHG-010",
+    "transaction_id": "TXN-HHG-010",
+    "trigger_reason": "Recurring Low-Risk Subscription Transaction",
+    "amount": 275.0,
+    "fraud_pattern": "Benign Activity"
+  },
+  "Investigation record": {
+    "agent": "FraudGraph Autonomous Investigation Agent",
+    "framework": "AutoGen Multi-Tool Orchestration",
+    "llm": "Google Gemini 1.5 Pro",
+    "graph_db": "TigerGraph Savanna",
+    "started_at": "2026-09-25T07:00:00Z",
+    "completed_at": "2026-09-25T07:00:00Z",
+    "execution_time_ms": 232,
+    "steps_executed": 12,
+    "timeline": [
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "TRIGGER",
+        "description": "Received investigation trigger: 'Recurring Low-Risk Subscription Transaction' for Transaction TXN-HHG-010",
+        "data": null
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "CREATE_CASE",
+        "description": "Opened new fraud investigation case: CASE-HHG-010",
+        "data": {
+          "id": "CASE-HHG-010",
+          "status": "OPEN",
+          "trigger_reason": "Recurring Low-Risk Subscription Transaction",
+          "created_at": "2026-09-25T07:00:00Z"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "INVESTIGATE",
+        "description": "Retrieved transactional context: Amount=$275.00",
+        "data": {
+          "transaction_id": "TXN-HHG-010",
+          "found": true,
+          "amount": 275.0,
+          "anomaly_score": 0.12,
+          "device": {
+            "id": "DEV-IOS-10",
+            "fingerprint": "fp_iphone_pro_441",
+            "device_type": "MOBILE",
+            "os": "iOS 17.5",
+            "browser": "Safari 17",
+            "is_emulator": false,
+            "shared_user_count": 1
+          },
+          "ip": {
+            "id": "IP-RES-10",
+            "ip_address": "67.125.34.88",
+            "country": "US",
+            "is_vpn": false,
+            "is_tor": false,
+            "risk_score": 0.05
+          }
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "GATHER_GRAPH_EVIDENCE",
+        "description": "Executed TigerGraph GSQL trace_device_sharing \u2014 device shared with 1 accounts",
+        "data": {
+          "id": "DEV-IOS-10",
+          "fingerprint": "fp_iphone_pro_441",
+          "device_type": "MOBILE",
+          "os": "iOS 17.5",
+          "browser": "Safari 17",
+          "is_emulator": false,
+          "shared_user_count": 1
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "GATHER_GRAPH_EVIDENCE",
+        "description": "Executed TigerGraph GSQL trace_ip_cluster \u2014 IP risk score 0.05",
+        "data": {
+          "id": "IP-RES-10",
+          "ip_address": "67.125.34.88",
+          "country": "US",
+          "is_vpn": false,
+          "is_tor": false,
+          "risk_score": 0.05
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "IDENTIFY_FRAUD_PATTERN",
+        "description": "TigerGraph graph pattern detection identified: 'Benign Activity'",
+        "data": {
+          "primary_pattern": "Benign Activity"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "RETRIEVE_POLICY_GRAPHRAG",
+        "description": "GraphRAG retrieved 1 governing policies for pattern 'Benign Activity'",
+        "data": [
+          {
+            "policy_code": "REC-010",
+            "title": "Recurring Subscription Allow Policy",
+            "category": "Transaction Risk"
+          }
+        ]
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "ASSESS_UNCERTAINTY",
+        "description": "Risk=0.08 | Confidence=0.96 | Uncertainty=0.04",
+        "data": {
+          "risk_score": 0.08,
+          "confidence_score": 0.96,
+          "uncertainty_score": 0.04,
+          "additional_evidence_required": false
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "REQUEST_ADDITIONAL_EVIDENCE",
+        "description": "Uncertainty exceeds threshold. Dispatching Step-Up Authentication challenge via TigerGraph action vertex.",
+        "data": null
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "RECEIVE_RESULT",
+        "description": "Step-up authentication result: PASSED",
+        "data": {
+          "outcome": "PASSED"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "REASSESS_RISK",
+        "description": "Post step-up \u2014 Risk=0.08 | Confidence=0.96",
+        "data": {
+          "risk_score": 0.08,
+          "confidence_score": 0.96
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "DETERMINE_NEXT_BEST_ACTION",
+        "description": "Recommended Next Best Action: ALLOW_TRANSACTION",
+        "data": {
+          "action": "ALLOW_TRANSACTION"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "CHECK_POLICY_PERMISSION",
+        "description": "Policy check complete. Approval tier: AUTOMATED_EXECUTION",
+        "data": {
+          "approval_tier": "AUTOMATED_EXECUTION"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "EXECUTE_ACTION",
+        "description": "Executed action: ALLOW_TRANSACTION",
+        "data": {
+          "action_type": "ALLOW_TRANSACTION",
+          "executed_by": "FraudGraph_Autonomous_Agent",
+          "approval_tier": "AUTOMATED_EXECUTION"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "EXPLAIN_DECISION",
+        "description": "Generated 8-question structured explainability rationale (XAI matrix).",
+        "data": null
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "UPDATE_CASE_MEMORY",
+        "description": "Persisted case outcome (ALLOWED) into TigerGraph FraudCase vertex & case memory.",
+        "data": {
+          "case_id": "CASE-HHG-010",
+          "outcome": "ALLOWED"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "CLOSE_OR_ESCALATE",
+        "description": "Case investigation concluded with outcome: ALLOWED.",
+        "data": null
+      }
+    ]
+  },
+  "Evidence": [
+    {
+      "evidence_type": "RECURRING_PATTERN",
+      "description": "Monthly subscription charge \u2014 consistent with 18-month billing history",
+      "confidence_weight": 0.95,
+      "polarity": "CONTRADICTING",
+      "source_tool": "TigerGraph_GSQL_Query",
+      "discovered_at": "2026-09-25T07:00:00Z"
+    },
+    {
+      "evidence_type": "CLEAN_DEVICE",
+      "description": "Known verified device \u2014 18-month history with account",
+      "confidence_weight": 0.92,
+      "polarity": "CONTRADICTING",
+      "source_tool": "TigerGraph_GSQL_Query",
+      "discovered_at": "2026-09-25T07:00:00Z"
+    },
+    {
+      "evidence_type": "LOW_RISK_MERCHANT",
+      "description": "Netflix Premium \u2014 well-known low-risk streaming merchant",
+      "confidence_weight": 0.98,
+      "polarity": "CONTRADICTING",
+      "source_tool": "TigerGraph_GSQL_Query",
+      "discovered_at": "2026-09-25T07:00:00Z"
+    }
+  ],
+  "Findings": "The FraudGraph agent executed a 12-step autonomous investigation against TigerGraph's knowledge graph. GSQL subgraph traversal detected 'Benign Activity' with 3 corroborating evidence signals. The anomaly score of 0.12 triggered a step-up authentication challenge, which returned 'PASSED', updating the agent's posterior risk estimate to 0.08 (confidence: 0.96).",
+  "Fraud pattern": "Benign Activity",
+  "Risk": 0.08,
+  "Confidence": 0.96,
+  "Uncertainty": 0.04,
+  "Decisions": {
+    "pre_evidence_action": "ALLOW_TRANSACTION",
+    "additional_evidence_dispatched": true,
+    "step_up_result": "PASSED",
+    "final_recommended_action": "ALLOW_TRANSACTION",
+    "status": "RESOLVED"
+  },
+  "Actions": [
+    "ALLOW_TRANSACTION"
+  ],
+  "Required approval": "AUTOMATED_EXECUTION",
+  "Next Best Action before additional evidence": {
+    "action": "ALLOW_TRANSACTION",
+    "reason": "Initial graph risk score 0.08 with uncertainty 0.04 \u2014 evidence pending",
+    "risk_level": "MEDIUM"
+  },
+  "Additional evidence requested": "REQUEST_STEP_UP_AUTHENTICATION",
+  "Result of additional evidence": "PASSED",
+  "Updated Next Best Action": {
+    "action": "ALLOW_TRANSACTION",
+    "reason": "Post step-up 'PASSED' \u2014 risk confirmed at 0.08. TigerGraph graph traversal identified 3 evidence signals. Policy 'REC-010' mandates ALLOW_TRANSACTION for Benign Activity.",
+    "action_display": "Allow Transaction",
+    "risk_level": "MEDIUM",
+    "required_approval": "AUTOMATED_EXECUTION"
+  },
+  "Final outcome": "ALLOWED",
+  "Case memory entry": {
+    "case_id": "CASE-HHG-010",
+    "transaction_id": "TXN-HHG-010",
+    "fraud_pattern": "Benign Activity",
+    "final_risk_score": 0.08,
+    "confidence_score": 0.96,
+    "uncertainty_score": 0.04,
+    "resolution": "RESOLVED",
+    "stored_in": "TigerGraph FraudCase Vertex + Case Memory Vector Store"
+  },
+  "Explainability": {
+    "what_triggered_the_investigation": "Recurring Low-Risk Subscription Transaction",
+    "what_did_the_agent_find": "TigerGraph GSQL graph traversal detected 'Benign Activity' \u2014 3 evidence signals corroborate fraud with risk score 0.08.",
+    "why_was_additional_evidence_requested": "Initial uncertainty (0.04) exceeded the 0.10 defensibility threshold \u2014 agent dispatched step-up authentication to reduce uncertainty.",
+    "how_did_the_additional_evidence_change_assessment": "Step-up result 'PASSED' resolved posterior risk to 0.08 and confirmed legitimate customer.",
+    "what_action_was_recommended": "ALLOW_TRANSACTION",
+    "why_was_this_action_chosen": "Policy 'REC-010' (Recurring Subscription Allow Policy) mandates ALLOW_TRANSACTION when risk \u2265 threshold and step-up returns 'PASSED'.",
+    "what_approval_was_required": "AUTOMATED_EXECUTION",
+    "what_is_the_business_impact": "Authorized legitimate transaction \u2014 preserved customer experience and avoided false-positive friction."
+  }
+}

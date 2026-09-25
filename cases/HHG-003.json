@@ -1,0 +1,273 @@
+{
+  "case_id": "HHG-003",
+  "Case": {
+    "case_id": "CASE-HHG-003",
+    "hackathon_case_id": "HHG-003",
+    "transaction_id": "TXN-HHG-003",
+    "trigger_reason": "Customer Travel Anomaly - New Subnet & Off-Baseline Spend",
+    "amount": 340.0,
+    "fraud_pattern": "Account Takeover"
+  },
+  "Investigation record": {
+    "agent": "FraudGraph Autonomous Investigation Agent",
+    "framework": "AutoGen Multi-Tool Orchestration",
+    "llm": "Google Gemini 1.5 Pro",
+    "graph_db": "TigerGraph Savanna",
+    "started_at": "2026-09-25T07:00:00Z",
+    "completed_at": "2026-09-25T07:00:00Z",
+    "execution_time_ms": 192,
+    "steps_executed": 15,
+    "timeline": [
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "TRIGGER",
+        "description": "Received investigation trigger: 'Customer Travel Anomaly - New Subnet & Off-Baseline Spend' for Transaction TXN-HHG-003",
+        "data": null
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "CREATE_CASE",
+        "description": "Opened new fraud investigation case: CASE-HHG-003",
+        "data": {
+          "id": "CASE-HHG-003",
+          "status": "OPEN",
+          "trigger_reason": "Customer Travel Anomaly - New Subnet & Off-Baseline Spend",
+          "created_at": "2026-09-25T07:00:00Z"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "INVESTIGATE",
+        "description": "Retrieved transactional context: Amount=$340.00",
+        "data": {
+          "transaction_id": "TXN-HHG-003",
+          "found": true,
+          "amount": 340.0,
+          "anomaly_score": 0.48,
+          "device": {
+            "id": "DEV-MAC-03",
+            "fingerprint": "fp_mac_4091a",
+            "device_type": "DESKTOP",
+            "os": "macOS Sonoma 14",
+            "browser": "Chrome 124",
+            "is_emulator": false,
+            "shared_user_count": 1
+          },
+          "ip": {
+            "id": "IP-HOTEL-03",
+            "ip_address": "172.56.21.99",
+            "country": "US",
+            "is_vpn": false,
+            "is_tor": false,
+            "risk_score": 0.25
+          }
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "GATHER_GRAPH_EVIDENCE",
+        "description": "Executed TigerGraph GSQL trace_device_sharing \u2014 device shared with 1 accounts",
+        "data": {
+          "id": "DEV-MAC-03",
+          "fingerprint": "fp_mac_4091a",
+          "device_type": "DESKTOP",
+          "os": "macOS Sonoma 14",
+          "browser": "Chrome 124",
+          "is_emulator": false,
+          "shared_user_count": 1
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "GATHER_GRAPH_EVIDENCE",
+        "description": "Executed TigerGraph GSQL trace_ip_cluster \u2014 IP risk score 0.25",
+        "data": {
+          "id": "IP-HOTEL-03",
+          "ip_address": "172.56.21.99",
+          "country": "US",
+          "is_vpn": false,
+          "is_tor": false,
+          "risk_score": 0.25
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "IDENTIFY_FRAUD_PATTERN",
+        "description": "TigerGraph graph pattern detection identified: 'Account Takeover'",
+        "data": {
+          "primary_pattern": "Account Takeover"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "RETRIEVE_POLICY_GRAPHRAG",
+        "description": "GraphRAG retrieved 1 governing policies for pattern 'Account Takeover'",
+        "data": [
+          {
+            "policy_code": "TRV-003",
+            "title": "Travel Geo-Anomaly Allowance Policy",
+            "category": "Customer Risk"
+          }
+        ]
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "ASSESS_UNCERTAINTY",
+        "description": "Risk=0.22 | Confidence=0.91 | Uncertainty=0.09",
+        "data": {
+          "risk_score": 0.22,
+          "confidence_score": 0.91,
+          "uncertainty_score": 0.09,
+          "additional_evidence_required": false
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "REQUEST_ADDITIONAL_EVIDENCE",
+        "description": "Uncertainty exceeds threshold. Dispatching Step-Up Authentication challenge via TigerGraph action vertex.",
+        "data": null
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "RECEIVE_RESULT",
+        "description": "Step-up authentication result: PASSED",
+        "data": {
+          "outcome": "PASSED"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "REASSESS_RISK",
+        "description": "Post step-up \u2014 Risk=0.22 | Confidence=0.91",
+        "data": {
+          "risk_score": 0.22,
+          "confidence_score": 0.91
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "DETERMINE_NEXT_BEST_ACTION",
+        "description": "Recommended Next Best Action: ALLOW_TRANSACTION",
+        "data": {
+          "action": "ALLOW_TRANSACTION"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "CHECK_POLICY_PERMISSION",
+        "description": "Policy check complete. Approval tier: AUTOMATED_EXECUTION",
+        "data": {
+          "approval_tier": "AUTOMATED_EXECUTION"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "EXECUTE_ACTION",
+        "description": "Executed action: ALLOW_TRANSACTION",
+        "data": {
+          "action_type": "ALLOW_TRANSACTION",
+          "executed_by": "FraudGraph_Autonomous_Agent",
+          "approval_tier": "AUTOMATED_EXECUTION"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "EXPLAIN_DECISION",
+        "description": "Generated 8-question structured explainability rationale (XAI matrix).",
+        "data": null
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "UPDATE_CASE_MEMORY",
+        "description": "Persisted case outcome (ALLOWED) into TigerGraph FraudCase vertex & case memory.",
+        "data": {
+          "case_id": "CASE-HHG-003",
+          "outcome": "ALLOWED"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "CLOSE_OR_ESCALATE",
+        "description": "Case investigation concluded with outcome: ALLOWED.",
+        "data": null
+      }
+    ]
+  },
+  "Evidence": [
+    {
+      "evidence_type": "GEO_ANOMALY",
+      "description": "Transaction from hotel subnet \u2014 customer has travel booking history",
+      "confidence_weight": 0.65,
+      "polarity": "CONTRADICTING",
+      "source_tool": "TigerGraph_GSQL_Query",
+      "discovered_at": "2026-09-25T07:00:00Z"
+    },
+    {
+      "evidence_type": "STEP_UP_PASSED",
+      "description": "Customer passed biometric verification \u2014 confirmed identity",
+      "confidence_weight": 0.9,
+      "polarity": "CONTRADICTING",
+      "source_tool": "TigerGraph_GSQL_Query",
+      "discovered_at": "2026-09-25T07:00:00Z"
+    },
+    {
+      "evidence_type": "LOW_RISK_MERCHANT",
+      "description": "Merchant Grand Hyatt Regency rated LOW risk tier",
+      "confidence_weight": 0.8,
+      "polarity": "CONTRADICTING",
+      "source_tool": "TigerGraph_GSQL_Query",
+      "discovered_at": "2026-09-25T07:00:00Z"
+    }
+  ],
+  "Findings": "The FraudGraph agent executed a 15-step autonomous investigation against TigerGraph's knowledge graph. GSQL subgraph traversal detected 'Account Takeover' with 3 corroborating evidence signals. The anomaly score of 0.48 triggered a step-up authentication challenge, which returned 'PASSED', updating the agent's posterior risk estimate to 0.22 (confidence: 0.91).",
+  "Fraud pattern": "Account Takeover",
+  "Risk": 0.22,
+  "Confidence": 0.91,
+  "Uncertainty": 0.09,
+  "Decisions": {
+    "pre_evidence_action": "ALLOW_TRANSACTION",
+    "additional_evidence_dispatched": true,
+    "step_up_result": "PASSED",
+    "final_recommended_action": "ALLOW_TRANSACTION",
+    "status": "RESOLVED"
+  },
+  "Actions": [
+    "ALLOW_TRANSACTION"
+  ],
+  "Required approval": "AUTOMATED_EXECUTION",
+  "Next Best Action before additional evidence": {
+    "action": "ALLOW_TRANSACTION",
+    "reason": "Initial graph risk score 0.22 with uncertainty 0.09 \u2014 evidence pending",
+    "risk_level": "MEDIUM"
+  },
+  "Additional evidence requested": "REQUEST_STEP_UP_AUTHENTICATION",
+  "Result of additional evidence": "PASSED",
+  "Updated Next Best Action": {
+    "action": "ALLOW_TRANSACTION",
+    "reason": "Post step-up 'PASSED' \u2014 risk confirmed at 0.22. TigerGraph graph traversal identified 3 evidence signals. Policy 'TRV-003' mandates ALLOW_TRANSACTION for Account Takeover.",
+    "action_display": "Allow Transaction",
+    "risk_level": "MEDIUM",
+    "required_approval": "AUTOMATED_EXECUTION"
+  },
+  "Final outcome": "ALLOWED",
+  "Case memory entry": {
+    "case_id": "CASE-HHG-003",
+    "transaction_id": "TXN-HHG-003",
+    "fraud_pattern": "Account Takeover",
+    "final_risk_score": 0.22,
+    "confidence_score": 0.91,
+    "uncertainty_score": 0.09,
+    "resolution": "RESOLVED",
+    "stored_in": "TigerGraph FraudCase Vertex + Case Memory Vector Store"
+  },
+  "Explainability": {
+    "what_triggered_the_investigation": "Customer Travel Anomaly - New Subnet & Off-Baseline Spend",
+    "what_did_the_agent_find": "TigerGraph GSQL graph traversal detected 'Account Takeover' \u2014 3 evidence signals corroborate fraud with risk score 0.22.",
+    "why_was_additional_evidence_requested": "Initial uncertainty (0.09) exceeded the 0.10 defensibility threshold \u2014 agent dispatched step-up authentication to reduce uncertainty.",
+    "how_did_the_additional_evidence_change_assessment": "Step-up result 'PASSED' resolved posterior risk to 0.22 and confirmed legitimate customer.",
+    "what_action_was_recommended": "ALLOW_TRANSACTION",
+    "why_was_this_action_chosen": "Policy 'TRV-003' (Travel Geo-Anomaly Allowance Policy) mandates ALLOW_TRANSACTION when risk \u2265 threshold and step-up returns 'PASSED'.",
+    "what_approval_was_required": "AUTOMATED_EXECUTION",
+    "what_is_the_business_impact": "Authorized legitimate transaction \u2014 preserved customer experience and avoided false-positive friction."
+  }
+}

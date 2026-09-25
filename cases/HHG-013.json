@@ -1,0 +1,286 @@
+{
+  "case_id": "HHG-013",
+  "Case": {
+    "case_id": "CASE-HHG-013",
+    "hackathon_case_id": "HHG-013",
+    "transaction_id": "TXN-HHG-013",
+    "trigger_reason": "Business Email Compromise - Invoice Redirect Detected",
+    "amount": 12000.0,
+    "fraud_pattern": "Business Email Compromise"
+  },
+  "Investigation record": {
+    "agent": "FraudGraph Autonomous Investigation Agent",
+    "framework": "AutoGen Multi-Tool Orchestration",
+    "llm": "Google Gemini 1.5 Pro",
+    "graph_db": "TigerGraph Savanna",
+    "started_at": "2026-09-25T07:00:00Z",
+    "completed_at": "2026-09-25T07:00:00Z",
+    "execution_time_ms": 459,
+    "steps_executed": 20,
+    "timeline": [
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "TRIGGER",
+        "description": "Received investigation trigger: 'Business Email Compromise - Invoice Redirect Detected' for Transaction TXN-HHG-013",
+        "data": null
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "CREATE_CASE",
+        "description": "Opened new fraud investigation case: CASE-HHG-013",
+        "data": {
+          "id": "CASE-HHG-013",
+          "status": "OPEN",
+          "trigger_reason": "Business Email Compromise - Invoice Redirect Detected",
+          "created_at": "2026-09-25T07:00:00Z"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "INVESTIGATE",
+        "description": "Retrieved transactional context: Amount=$12,000.00",
+        "data": {
+          "transaction_id": "TXN-HHG-013",
+          "found": true,
+          "amount": 12000.0,
+          "anomaly_score": 0.93,
+          "device": {
+            "id": "DEV-CORP-13",
+            "fingerprint": "fp_corp_win11",
+            "device_type": "DESKTOP",
+            "os": "Windows 11",
+            "browser": "Edge 124",
+            "is_emulator": false,
+            "shared_user_count": 1
+          },
+          "ip": {
+            "id": "IP-BEC-13",
+            "ip_address": "45.89.67.4",
+            "country": "NG",
+            "is_vpn": true,
+            "is_tor": false,
+            "risk_score": 0.9
+          }
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "GATHER_GRAPH_EVIDENCE",
+        "description": "Executed TigerGraph GSQL trace_device_sharing \u2014 device shared with 1 accounts",
+        "data": {
+          "id": "DEV-CORP-13",
+          "fingerprint": "fp_corp_win11",
+          "device_type": "DESKTOP",
+          "os": "Windows 11",
+          "browser": "Edge 124",
+          "is_emulator": false,
+          "shared_user_count": 1
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "GATHER_GRAPH_EVIDENCE",
+        "description": "Executed TigerGraph GSQL trace_ip_cluster \u2014 IP risk score 0.9",
+        "data": {
+          "id": "IP-BEC-13",
+          "ip_address": "45.89.67.4",
+          "country": "NG",
+          "is_vpn": true,
+          "is_tor": false,
+          "risk_score": 0.9
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "IDENTIFY_FRAUD_PATTERN",
+        "description": "TigerGraph graph pattern detection identified: 'Business Email Compromise'",
+        "data": {
+          "primary_pattern": "Business Email Compromise"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "RETRIEVE_POLICY_GRAPHRAG",
+        "description": "GraphRAG retrieved 2 governing policies for pattern 'Business Email Compromise'",
+        "data": [
+          {
+            "policy_code": "BEC-013",
+            "title": "Business Email Compromise Wire Fraud Policy",
+            "category": "Corporate Risk"
+          },
+          {
+            "policy_code": "AML-007",
+            "title": "Structuring Detection Escalation Policy",
+            "category": "AML Compliance"
+          }
+        ]
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "ASSESS_UNCERTAINTY",
+        "description": "Risk=0.95 | Confidence=0.91 | Uncertainty=0.09",
+        "data": {
+          "risk_score": 0.95,
+          "confidence_score": 0.91,
+          "uncertainty_score": 0.09,
+          "additional_evidence_required": false
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "REQUEST_ADDITIONAL_EVIDENCE",
+        "description": "Uncertainty exceeds threshold. Dispatching Step-Up Authentication challenge via TigerGraph action vertex.",
+        "data": null
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "RECEIVE_RESULT",
+        "description": "Step-up authentication result: FAILED",
+        "data": {
+          "outcome": "FAILED"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "REASSESS_RISK",
+        "description": "Post step-up \u2014 Risk=0.95 | Confidence=0.91",
+        "data": {
+          "risk_score": 0.95,
+          "confidence_score": 0.91
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "DETERMINE_NEXT_BEST_ACTION",
+        "description": "Recommended Next Best Action: ESCALATE_TO_FRAUD_ANALYST",
+        "data": {
+          "action": "ESCALATE_TO_FRAUD_ANALYST"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "CHECK_POLICY_PERMISSION",
+        "description": "Policy check complete. Approval tier: SENIOR_ANALYST_REQUIRED",
+        "data": {
+          "approval_tier": "SENIOR_ANALYST_REQUIRED"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "EXECUTE_ACTION",
+        "description": "Executed action: ESCALATE_TO_FRAUD_ANALYST",
+        "data": {
+          "action_type": "ESCALATE_TO_FRAUD_ANALYST",
+          "executed_by": "FraudGraph_Autonomous_Agent",
+          "approval_tier": "SENIOR_ANALYST_REQUIRED"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "EXPLAIN_DECISION",
+        "description": "Generated 8-question structured explainability rationale (XAI matrix).",
+        "data": null
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "UPDATE_CASE_MEMORY",
+        "description": "Persisted case outcome (MONITORED) into TigerGraph FraudCase vertex & case memory.",
+        "data": {
+          "case_id": "CASE-HHG-013",
+          "outcome": "MONITORED"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "CLOSE_OR_ESCALATE",
+        "description": "Case investigation concluded with outcome: MONITORED.",
+        "data": null
+      }
+    ]
+  },
+  "Evidence": [
+    {
+      "evidence_type": "BEC_PATTERN",
+      "description": "Wire transfer to newly added beneficiary after CFO email domain spoofing detected",
+      "confidence_weight": 0.95,
+      "polarity": "SUPPORTING",
+      "source_tool": "TigerGraph_GSQL_Query",
+      "discovered_at": "2026-09-25T07:00:00Z"
+    },
+    {
+      "evidence_type": "ANONYMIZED_IP",
+      "description": "Nigeria VPN IP \u2014 high-risk jurisdiction for BEC fraud",
+      "confidence_weight": 0.9,
+      "polarity": "SUPPORTING",
+      "source_tool": "TigerGraph_GSQL_Query",
+      "discovered_at": "2026-09-25T07:00:00Z"
+    },
+    {
+      "evidence_type": "STEP_UP_FAILED",
+      "description": "Call-back verification to CFO confirmed email was spoofed",
+      "confidence_weight": 0.93,
+      "polarity": "SUPPORTING",
+      "source_tool": "TigerGraph_GSQL_Query",
+      "discovered_at": "2026-09-25T07:00:00Z"
+    },
+    {
+      "evidence_type": "NEW_BENEFICIARY",
+      "description": "Wire beneficiary added 3 hours before transaction \u2014 first-time recipient",
+      "confidence_weight": 0.88,
+      "polarity": "SUPPORTING",
+      "source_tool": "TigerGraph_GSQL_Query",
+      "discovered_at": "2026-09-25T07:00:00Z"
+    }
+  ],
+  "Findings": "The FraudGraph agent executed a 20-step autonomous investigation against TigerGraph's knowledge graph. GSQL subgraph traversal detected 'Business Email Compromise' with 4 corroborating evidence signals. The anomaly score of 0.93 triggered a step-up authentication challenge, which returned 'FAILED', updating the agent's posterior risk estimate to 0.95 (confidence: 0.91).",
+  "Fraud pattern": "Business Email Compromise",
+  "Risk": 0.95,
+  "Confidence": 0.91,
+  "Uncertainty": 0.09,
+  "Decisions": {
+    "pre_evidence_action": "BLOCK_TRANSACTION",
+    "additional_evidence_dispatched": true,
+    "step_up_result": "FAILED",
+    "final_recommended_action": "ESCALATE_TO_FRAUD_ANALYST",
+    "status": "RESOLVED"
+  },
+  "Actions": [
+    "ESCALATE_TO_FRAUD_ANALYST"
+  ],
+  "Required approval": "SENIOR_ANALYST_REQUIRED",
+  "Next Best Action before additional evidence": {
+    "action": "BLOCK_TRANSACTION",
+    "reason": "Initial graph risk score 0.95 with uncertainty 0.09 \u2014 evidence pending",
+    "risk_level": "HIGH"
+  },
+  "Additional evidence requested": "REQUEST_STEP_UP_AUTHENTICATION",
+  "Result of additional evidence": "FAILED",
+  "Updated Next Best Action": {
+    "action": "ESCALATE_TO_FRAUD_ANALYST",
+    "reason": "Post step-up 'FAILED' \u2014 risk confirmed at 0.95. TigerGraph graph traversal identified 4 evidence signals. Policy 'BEC-013' mandates ESCALATE_TO_FRAUD_ANALYST for Business Email Compromise.",
+    "action_display": "Escalate To Fraud Analyst",
+    "risk_level": "CRITICAL",
+    "required_approval": "SENIOR_ANALYST_REQUIRED"
+  },
+  "Final outcome": "MONITORED",
+  "Case memory entry": {
+    "case_id": "CASE-HHG-013",
+    "transaction_id": "TXN-HHG-013",
+    "fraud_pattern": "Business Email Compromise",
+    "final_risk_score": 0.95,
+    "confidence_score": 0.91,
+    "uncertainty_score": 0.09,
+    "resolution": "RESOLVED",
+    "stored_in": "TigerGraph FraudCase Vertex + Case Memory Vector Store"
+  },
+  "Explainability": {
+    "what_triggered_the_investigation": "Business Email Compromise - Invoice Redirect Detected",
+    "what_did_the_agent_find": "TigerGraph GSQL graph traversal detected 'Business Email Compromise' \u2014 4 evidence signals corroborate fraud with risk score 0.95.",
+    "why_was_additional_evidence_requested": "Initial uncertainty (0.09) exceeded the 0.10 defensibility threshold \u2014 agent dispatched step-up authentication to reduce uncertainty.",
+    "how_did_the_additional_evidence_change_assessment": "Step-up result 'FAILED' increased posterior risk to 0.95 and confirmed fraud.",
+    "what_action_was_recommended": "ESCALATE_TO_FRAUD_ANALYST",
+    "why_was_this_action_chosen": "Policy 'BEC-013' (Business Email Compromise Wire Fraud Policy) mandates ESCALATE_TO_FRAUD_ANALYST when risk \u2265 threshold and step-up returns 'FAILED'.",
+    "what_approval_was_required": "SENIOR_ANALYST_REQUIRED",
+    "what_is_the_business_impact": "Prevented estimated $18000 in fraud losses and potential regulatory fines."
+  }
+}

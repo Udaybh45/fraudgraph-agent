@@ -1,0 +1,281 @@
+{
+  "case_id": "HHG-014",
+  "Case": {
+    "case_id": "CASE-HHG-014",
+    "hackathon_case_id": "HHG-014",
+    "transaction_id": "TXN-HHG-014",
+    "trigger_reason": "Chargeback Ring - Device Shared Across 7 Prior Disputes",
+    "amount": 980.0,
+    "fraud_pattern": "Friendly Fraud / Chargeback Ring"
+  },
+  "Investigation record": {
+    "agent": "FraudGraph Autonomous Investigation Agent",
+    "framework": "AutoGen Multi-Tool Orchestration",
+    "llm": "Google Gemini 1.5 Pro",
+    "graph_db": "TigerGraph Savanna",
+    "started_at": "2026-09-25T07:00:00Z",
+    "completed_at": "2026-09-25T07:00:00Z",
+    "execution_time_ms": 224,
+    "steps_executed": 17,
+    "timeline": [
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "TRIGGER",
+        "description": "Received investigation trigger: 'Chargeback Ring - Device Shared Across 7 Prior Disputes' for Transaction TXN-HHG-014",
+        "data": null
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "CREATE_CASE",
+        "description": "Opened new fraud investigation case: CASE-HHG-014",
+        "data": {
+          "id": "CASE-HHG-014",
+          "status": "OPEN",
+          "trigger_reason": "Chargeback Ring - Device Shared Across 7 Prior Disputes",
+          "created_at": "2026-09-25T07:00:00Z"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "INVESTIGATE",
+        "description": "Retrieved transactional context: Amount=$980.00",
+        "data": {
+          "transaction_id": "TXN-HHG-014",
+          "found": true,
+          "amount": 980.0,
+          "anomaly_score": 0.78,
+          "device": {
+            "id": "DEV-FARM-14",
+            "fingerprint": "fp_android_331",
+            "device_type": "MOBILE",
+            "os": "Android 13",
+            "browser": "Chrome 123",
+            "is_emulator": false,
+            "shared_user_count": 7
+          },
+          "ip": {
+            "id": "IP-RES-14",
+            "ip_address": "194.26.29.44",
+            "country": "BR",
+            "is_vpn": false,
+            "is_tor": false,
+            "risk_score": 0.55
+          }
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "GATHER_GRAPH_EVIDENCE",
+        "description": "Executed TigerGraph GSQL trace_device_sharing \u2014 device shared with 7 accounts",
+        "data": {
+          "id": "DEV-FARM-14",
+          "fingerprint": "fp_android_331",
+          "device_type": "MOBILE",
+          "os": "Android 13",
+          "browser": "Chrome 123",
+          "is_emulator": false,
+          "shared_user_count": 7
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "GATHER_GRAPH_EVIDENCE",
+        "description": "Executed TigerGraph GSQL trace_ip_cluster \u2014 IP risk score 0.55",
+        "data": {
+          "id": "IP-RES-14",
+          "ip_address": "194.26.29.44",
+          "country": "BR",
+          "is_vpn": false,
+          "is_tor": false,
+          "risk_score": 0.55
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "IDENTIFY_FRAUD_PATTERN",
+        "description": "TigerGraph graph pattern detection identified: 'Friendly Fraud / Chargeback Ring'",
+        "data": {
+          "primary_pattern": "Friendly Fraud / Chargeback Ring"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "RETRIEVE_POLICY_GRAPHRAG",
+        "description": "GraphRAG retrieved 1 governing policies for pattern 'Friendly Fraud / Chargeback Ring'",
+        "data": [
+          {
+            "policy_code": "CBK-014",
+            "title": "Chargeback Ring Detection Block Policy",
+            "category": "Dispute Risk"
+          }
+        ]
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "ASSESS_UNCERTAINTY",
+        "description": "Risk=0.88 | Confidence=0.86 | Uncertainty=0.14",
+        "data": {
+          "risk_score": 0.88,
+          "confidence_score": 0.86,
+          "uncertainty_score": 0.14,
+          "additional_evidence_required": true
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "REQUEST_ADDITIONAL_EVIDENCE",
+        "description": "Uncertainty exceeds threshold. Dispatching Step-Up Authentication challenge via TigerGraph action vertex.",
+        "data": null
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "RECEIVE_RESULT",
+        "description": "Step-up authentication result: FAILED",
+        "data": {
+          "outcome": "FAILED"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "REASSESS_RISK",
+        "description": "Post step-up \u2014 Risk=0.88 | Confidence=0.86",
+        "data": {
+          "risk_score": 0.88,
+          "confidence_score": 0.86
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "DETERMINE_NEXT_BEST_ACTION",
+        "description": "Recommended Next Best Action: BLOCK_TRANSACTION",
+        "data": {
+          "action": "BLOCK_TRANSACTION"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "CHECK_POLICY_PERMISSION",
+        "description": "Policy check complete. Approval tier: AUTOMATED_EXECUTION",
+        "data": {
+          "approval_tier": "AUTOMATED_EXECUTION"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "EXECUTE_ACTION",
+        "description": "Executed action: BLOCK_TRANSACTION",
+        "data": {
+          "action_type": "BLOCK_TRANSACTION",
+          "executed_by": "FraudGraph_Autonomous_Agent",
+          "approval_tier": "AUTOMATED_EXECUTION"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "EXPLAIN_DECISION",
+        "description": "Generated 8-question structured explainability rationale (XAI matrix).",
+        "data": null
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "UPDATE_CASE_MEMORY",
+        "description": "Persisted case outcome (BLOCKED) into TigerGraph FraudCase vertex & case memory.",
+        "data": {
+          "case_id": "CASE-HHG-014",
+          "outcome": "BLOCKED"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "CLOSE_OR_ESCALATE",
+        "description": "Case investigation concluded with outcome: BLOCKED.",
+        "data": null
+      }
+    ]
+  },
+  "Evidence": [
+    {
+      "evidence_type": "CHARGEBACK_RING",
+      "description": "Device shared across 7 accounts \u2014 all filed chargebacks after luxury purchases",
+      "confidence_weight": 0.93,
+      "polarity": "SUPPORTING",
+      "source_tool": "TigerGraph_GSQL_Query",
+      "discovered_at": "2026-09-25T07:00:00Z"
+    },
+    {
+      "evidence_type": "HIGH_CHARGEBACK_RATE",
+      "description": "Customer has 7 prior chargebacks \u2014 far above threshold of 2",
+      "confidence_weight": 0.88,
+      "polarity": "SUPPORTING",
+      "source_tool": "TigerGraph_GSQL_Query",
+      "discovered_at": "2026-09-25T07:00:00Z"
+    },
+    {
+      "evidence_type": "HIGH_RISK_MERCHANT",
+      "description": "Luxury jewelry \u2014 high-value easily-liquidatable goods",
+      "confidence_weight": 0.82,
+      "polarity": "SUPPORTING",
+      "source_tool": "TigerGraph_GSQL_Query",
+      "discovered_at": "2026-09-25T07:00:00Z"
+    },
+    {
+      "evidence_type": "STEP_UP_FAILED",
+      "description": "Challenge not accepted \u2014 potential fraud ring member",
+      "confidence_weight": 0.85,
+      "polarity": "SUPPORTING",
+      "source_tool": "TigerGraph_GSQL_Query",
+      "discovered_at": "2026-09-25T07:00:00Z"
+    }
+  ],
+  "Findings": "The FraudGraph agent executed a 17-step autonomous investigation against TigerGraph's knowledge graph. GSQL subgraph traversal detected 'Friendly Fraud / Chargeback Ring' with 4 corroborating evidence signals. The anomaly score of 0.78 triggered a step-up authentication challenge, which returned 'FAILED', updating the agent's posterior risk estimate to 0.88 (confidence: 0.86).",
+  "Fraud pattern": "Friendly Fraud / Chargeback Ring",
+  "Risk": 0.88,
+  "Confidence": 0.86,
+  "Uncertainty": 0.14,
+  "Decisions": {
+    "pre_evidence_action": "BLOCK_TRANSACTION",
+    "additional_evidence_dispatched": true,
+    "step_up_result": "FAILED",
+    "final_recommended_action": "BLOCK_TRANSACTION",
+    "status": "RESOLVED"
+  },
+  "Actions": [
+    "BLOCK_TRANSACTION"
+  ],
+  "Required approval": "AUTOMATED_EXECUTION",
+  "Next Best Action before additional evidence": {
+    "action": "BLOCK_TRANSACTION",
+    "reason": "Initial graph risk score 0.88 with uncertainty 0.14 \u2014 evidence pending",
+    "risk_level": "HIGH"
+  },
+  "Additional evidence requested": "REQUEST_STEP_UP_AUTHENTICATION",
+  "Result of additional evidence": "FAILED",
+  "Updated Next Best Action": {
+    "action": "BLOCK_TRANSACTION",
+    "reason": "Post step-up 'FAILED' \u2014 risk confirmed at 0.88. TigerGraph graph traversal identified 4 evidence signals. Policy 'CBK-014' mandates BLOCK_TRANSACTION for Friendly Fraud / Chargeback Ring.",
+    "action_display": "Block Transaction",
+    "risk_level": "HIGH",
+    "required_approval": "AUTOMATED_EXECUTION"
+  },
+  "Final outcome": "BLOCKED",
+  "Case memory entry": {
+    "case_id": "CASE-HHG-014",
+    "transaction_id": "TXN-HHG-014",
+    "fraud_pattern": "Friendly Fraud / Chargeback Ring",
+    "final_risk_score": 0.88,
+    "confidence_score": 0.86,
+    "uncertainty_score": 0.14,
+    "resolution": "RESOLVED",
+    "stored_in": "TigerGraph FraudCase Vertex + Case Memory Vector Store"
+  },
+  "Explainability": {
+    "what_triggered_the_investigation": "Chargeback Ring - Device Shared Across 7 Prior Disputes",
+    "what_did_the_agent_find": "TigerGraph GSQL graph traversal detected 'Friendly Fraud / Chargeback Ring' \u2014 4 evidence signals corroborate fraud with risk score 0.88.",
+    "why_was_additional_evidence_requested": "Initial uncertainty (0.14) exceeded the 0.10 defensibility threshold \u2014 agent dispatched step-up authentication to reduce uncertainty.",
+    "how_did_the_additional_evidence_change_assessment": "Step-up result 'FAILED' increased posterior risk to 0.88 and confirmed fraud.",
+    "what_action_was_recommended": "BLOCK_TRANSACTION",
+    "why_was_this_action_chosen": "Policy 'CBK-014' (Chargeback Ring Detection Block Policy) mandates BLOCK_TRANSACTION when risk \u2265 threshold and step-up returns 'FAILED'.",
+    "what_approval_was_required": "AUTOMATED_EXECUTION",
+    "what_is_the_business_impact": "Prevented estimated $1470 in fraud losses and potential regulatory fines."
+  }
+}

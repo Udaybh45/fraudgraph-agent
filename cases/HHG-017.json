@@ -1,0 +1,278 @@
+{
+  "case_id": "HHG-017",
+  "Case": {
+    "case_id": "CASE-HHG-017",
+    "hackathon_case_id": "HHG-017",
+    "transaction_id": "TXN-HHG-017",
+    "trigger_reason": "Anomalous Time-of-Day - 3AM Transaction High-Value",
+    "amount": 1100.0,
+    "fraud_pattern": "Account Takeover"
+  },
+  "Investigation record": {
+    "agent": "FraudGraph Autonomous Investigation Agent",
+    "framework": "AutoGen Multi-Tool Orchestration",
+    "llm": "Google Gemini 1.5 Pro",
+    "graph_db": "TigerGraph Savanna",
+    "started_at": "2026-09-25T07:00:00Z",
+    "completed_at": "2026-09-25T07:00:00Z",
+    "execution_time_ms": 196,
+    "steps_executed": 16,
+    "timeline": [
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "TRIGGER",
+        "description": "Received investigation trigger: 'Anomalous Time-of-Day - 3AM Transaction High-Value' for Transaction TXN-HHG-017",
+        "data": null
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "CREATE_CASE",
+        "description": "Opened new fraud investigation case: CASE-HHG-017",
+        "data": {
+          "id": "CASE-HHG-017",
+          "status": "OPEN",
+          "trigger_reason": "Anomalous Time-of-Day - 3AM Transaction High-Value",
+          "created_at": "2026-09-25T07:00:00Z"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "INVESTIGATE",
+        "description": "Retrieved transactional context: Amount=$1,100.00",
+        "data": {
+          "transaction_id": "TXN-HHG-017",
+          "found": true,
+          "amount": 1100.0,
+          "anomaly_score": 0.66,
+          "device": {
+            "id": "DEV-NEW-17",
+            "fingerprint": "fp_new_android_551",
+            "device_type": "MOBILE",
+            "os": "Android 13",
+            "browser": "Chrome Mobile 123",
+            "is_emulator": false,
+            "shared_user_count": 1
+          },
+          "ip": {
+            "id": "IP-COMM-17",
+            "ip_address": "104.28.100.9",
+            "country": "US",
+            "is_vpn": false,
+            "is_tor": false,
+            "risk_score": 0.4
+          }
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "GATHER_GRAPH_EVIDENCE",
+        "description": "Executed TigerGraph GSQL trace_device_sharing \u2014 device shared with 1 accounts",
+        "data": {
+          "id": "DEV-NEW-17",
+          "fingerprint": "fp_new_android_551",
+          "device_type": "MOBILE",
+          "os": "Android 13",
+          "browser": "Chrome Mobile 123",
+          "is_emulator": false,
+          "shared_user_count": 1
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "GATHER_GRAPH_EVIDENCE",
+        "description": "Executed TigerGraph GSQL trace_ip_cluster \u2014 IP risk score 0.4",
+        "data": {
+          "id": "IP-COMM-17",
+          "ip_address": "104.28.100.9",
+          "country": "US",
+          "is_vpn": false,
+          "is_tor": false,
+          "risk_score": 0.4
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "IDENTIFY_FRAUD_PATTERN",
+        "description": "TigerGraph graph pattern detection identified: 'Account Takeover'",
+        "data": {
+          "primary_pattern": "Account Takeover"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "RETRIEVE_POLICY_GRAPHRAG",
+        "description": "GraphRAG retrieved 2 governing policies for pattern 'Account Takeover'",
+        "data": [
+          {
+            "policy_code": "ATO-008",
+            "title": "SIM Swap Account Takeover Policy",
+            "category": "Identity Risk"
+          },
+          {
+            "policy_code": "TOD-017",
+            "title": "Off-Hours High-Value Transaction Review Policy",
+            "category": "Behavioral Risk"
+          }
+        ]
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "ASSESS_UNCERTAINTY",
+        "description": "Risk=0.82 | Confidence=0.83 | Uncertainty=0.17",
+        "data": {
+          "risk_score": 0.82,
+          "confidence_score": 0.83,
+          "uncertainty_score": 0.17,
+          "additional_evidence_required": true
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "REQUEST_ADDITIONAL_EVIDENCE",
+        "description": "Uncertainty exceeds threshold. Dispatching Step-Up Authentication challenge via TigerGraph action vertex.",
+        "data": null
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "RECEIVE_RESULT",
+        "description": "Step-up authentication result: FAILED",
+        "data": {
+          "outcome": "FAILED"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "REASSESS_RISK",
+        "description": "Post step-up \u2014 Risk=0.82 | Confidence=0.83",
+        "data": {
+          "risk_score": 0.82,
+          "confidence_score": 0.83
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "DETERMINE_NEXT_BEST_ACTION",
+        "description": "Recommended Next Best Action: BLOCK_TRANSACTION",
+        "data": {
+          "action": "BLOCK_TRANSACTION"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "CHECK_POLICY_PERMISSION",
+        "description": "Policy check complete. Approval tier: AUTOMATED_EXECUTION",
+        "data": {
+          "approval_tier": "AUTOMATED_EXECUTION"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "EXECUTE_ACTION",
+        "description": "Executed action: BLOCK_TRANSACTION",
+        "data": {
+          "action_type": "BLOCK_TRANSACTION",
+          "executed_by": "FraudGraph_Autonomous_Agent",
+          "approval_tier": "AUTOMATED_EXECUTION"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "EXPLAIN_DECISION",
+        "description": "Generated 8-question structured explainability rationale (XAI matrix).",
+        "data": null
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "UPDATE_CASE_MEMORY",
+        "description": "Persisted case outcome (BLOCKED) into TigerGraph FraudCase vertex & case memory.",
+        "data": {
+          "case_id": "CASE-HHG-017",
+          "outcome": "BLOCKED"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "CLOSE_OR_ESCALATE",
+        "description": "Case investigation concluded with outcome: BLOCKED.",
+        "data": null
+      }
+    ]
+  },
+  "Evidence": [
+    {
+      "evidence_type": "TEMPORAL_ANOMALY",
+      "description": "3:14 AM transaction \u2014 customer 0% historical 2AM-5AM activity",
+      "confidence_weight": 0.82,
+      "polarity": "SUPPORTING",
+      "source_tool": "TigerGraph_GSQL_Query",
+      "discovered_at": "2026-09-25T07:00:00Z"
+    },
+    {
+      "evidence_type": "UNRECOGNIZED_DEVICE",
+      "description": "New device registered 45 minutes before transaction",
+      "confidence_weight": 0.8,
+      "polarity": "SUPPORTING",
+      "source_tool": "TigerGraph_GSQL_Query",
+      "discovered_at": "2026-09-25T07:00:00Z"
+    },
+    {
+      "evidence_type": "STEP_UP_FAILED",
+      "description": "Push notification OTP not acknowledged \u2014 customer asleep",
+      "confidence_weight": 0.85,
+      "polarity": "SUPPORTING",
+      "source_tool": "TigerGraph_GSQL_Query",
+      "discovered_at": "2026-09-25T07:00:00Z"
+    }
+  ],
+  "Findings": "The FraudGraph agent executed a 16-step autonomous investigation against TigerGraph's knowledge graph. GSQL subgraph traversal detected 'Account Takeover' with 3 corroborating evidence signals. The anomaly score of 0.66 triggered a step-up authentication challenge, which returned 'FAILED', updating the agent's posterior risk estimate to 0.82 (confidence: 0.83).",
+  "Fraud pattern": "Account Takeover",
+  "Risk": 0.82,
+  "Confidence": 0.83,
+  "Uncertainty": 0.17,
+  "Decisions": {
+    "pre_evidence_action": "BLOCK_TRANSACTION",
+    "additional_evidence_dispatched": true,
+    "step_up_result": "FAILED",
+    "final_recommended_action": "BLOCK_TRANSACTION",
+    "status": "RESOLVED"
+  },
+  "Actions": [
+    "BLOCK_TRANSACTION"
+  ],
+  "Required approval": "AUTOMATED_EXECUTION",
+  "Next Best Action before additional evidence": {
+    "action": "BLOCK_TRANSACTION",
+    "reason": "Initial graph risk score 0.82 with uncertainty 0.17 \u2014 evidence pending",
+    "risk_level": "HIGH"
+  },
+  "Additional evidence requested": "REQUEST_STEP_UP_AUTHENTICATION",
+  "Result of additional evidence": "FAILED",
+  "Updated Next Best Action": {
+    "action": "BLOCK_TRANSACTION",
+    "reason": "Post step-up 'FAILED' \u2014 risk confirmed at 0.82. TigerGraph graph traversal identified 3 evidence signals. Policy 'ATO-008' mandates BLOCK_TRANSACTION for Account Takeover.",
+    "action_display": "Block Transaction",
+    "risk_level": "HIGH",
+    "required_approval": "AUTOMATED_EXECUTION"
+  },
+  "Final outcome": "BLOCKED",
+  "Case memory entry": {
+    "case_id": "CASE-HHG-017",
+    "transaction_id": "TXN-HHG-017",
+    "fraud_pattern": "Account Takeover",
+    "final_risk_score": 0.82,
+    "confidence_score": 0.83,
+    "uncertainty_score": 0.17,
+    "resolution": "RESOLVED",
+    "stored_in": "TigerGraph FraudCase Vertex + Case Memory Vector Store"
+  },
+  "Explainability": {
+    "what_triggered_the_investigation": "Anomalous Time-of-Day - 3AM Transaction High-Value",
+    "what_did_the_agent_find": "TigerGraph GSQL graph traversal detected 'Account Takeover' \u2014 3 evidence signals corroborate fraud with risk score 0.82.",
+    "why_was_additional_evidence_requested": "Initial uncertainty (0.17) exceeded the 0.10 defensibility threshold \u2014 agent dispatched step-up authentication to reduce uncertainty.",
+    "how_did_the_additional_evidence_change_assessment": "Step-up result 'FAILED' increased posterior risk to 0.82 and confirmed fraud.",
+    "what_action_was_recommended": "BLOCK_TRANSACTION",
+    "why_was_this_action_chosen": "Policy 'ATO-008' (SIM Swap Account Takeover Policy) mandates BLOCK_TRANSACTION when risk \u2265 threshold and step-up returns 'FAILED'.",
+    "what_approval_was_required": "AUTOMATED_EXECUTION",
+    "what_is_the_business_impact": "Prevented estimated $1650 in fraud losses and potential regulatory fines."
+  }
+}

@@ -1,0 +1,286 @@
+{
+  "case_id": "HHG-011",
+  "Case": {
+    "case_id": "CASE-HHG-011",
+    "hackathon_case_id": "HHG-011",
+    "transaction_id": "TXN-HHG-011",
+    "trigger_reason": "Multiple Emulated Devices Sharing Single IP Address",
+    "amount": 7800.0,
+    "fraud_pattern": "Device Farming / Multi-Accounting"
+  },
+  "Investigation record": {
+    "agent": "FraudGraph Autonomous Investigation Agent",
+    "framework": "AutoGen Multi-Tool Orchestration",
+    "llm": "Google Gemini 1.5 Pro",
+    "graph_db": "TigerGraph Savanna",
+    "started_at": "2026-09-25T07:00:00Z",
+    "completed_at": "2026-09-25T07:00:00Z",
+    "execution_time_ms": 526,
+    "steps_executed": 18,
+    "timeline": [
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "TRIGGER",
+        "description": "Received investigation trigger: 'Multiple Emulated Devices Sharing Single IP Address' for Transaction TXN-HHG-011",
+        "data": null
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "CREATE_CASE",
+        "description": "Opened new fraud investigation case: CASE-HHG-011",
+        "data": {
+          "id": "CASE-HHG-011",
+          "status": "OPEN",
+          "trigger_reason": "Multiple Emulated Devices Sharing Single IP Address",
+          "created_at": "2026-09-25T07:00:00Z"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "INVESTIGATE",
+        "description": "Retrieved transactional context: Amount=$7,800.00",
+        "data": {
+          "transaction_id": "TXN-HHG-011",
+          "found": true,
+          "amount": 7800.0,
+          "anomaly_score": 0.91,
+          "device": {
+            "id": "DEV-EMU-11",
+            "fingerprint": "fp_bluestack_112",
+            "device_type": "EMULATOR",
+            "os": "Android 11 / Bluestacks",
+            "browser": "Chrome Headless 123",
+            "is_emulator": true,
+            "shared_user_count": 9
+          },
+          "ip": {
+            "id": "IP-TOR-11",
+            "ip_address": "185.220.101.33",
+            "country": "DE",
+            "is_vpn": true,
+            "is_tor": true,
+            "risk_score": 0.96
+          }
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "GATHER_GRAPH_EVIDENCE",
+        "description": "Executed TigerGraph GSQL trace_device_sharing \u2014 device shared with 9 accounts",
+        "data": {
+          "id": "DEV-EMU-11",
+          "fingerprint": "fp_bluestack_112",
+          "device_type": "EMULATOR",
+          "os": "Android 11 / Bluestacks",
+          "browser": "Chrome Headless 123",
+          "is_emulator": true,
+          "shared_user_count": 9
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "GATHER_GRAPH_EVIDENCE",
+        "description": "Executed TigerGraph GSQL trace_ip_cluster \u2014 IP risk score 0.96",
+        "data": {
+          "id": "IP-TOR-11",
+          "ip_address": "185.220.101.33",
+          "country": "DE",
+          "is_vpn": true,
+          "is_tor": true,
+          "risk_score": 0.96
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "IDENTIFY_FRAUD_PATTERN",
+        "description": "TigerGraph graph pattern detection identified: 'Device Farming / Multi-Accounting'",
+        "data": {
+          "primary_pattern": "Device Farming / Multi-Accounting"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "RETRIEVE_POLICY_GRAPHRAG",
+        "description": "GraphRAG retrieved 2 governing policies for pattern 'Device Farming / Multi-Accounting'",
+        "data": [
+          {
+            "policy_code": "FRD-001",
+            "title": "Device Farming Block Policy",
+            "category": "Device Risk"
+          },
+          {
+            "policy_code": "GFT-011",
+            "title": "Gift Card High-Risk Purchase Policy",
+            "category": "Merchant Risk"
+          }
+        ]
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "ASSESS_UNCERTAINTY",
+        "description": "Risk=0.95 | Confidence=0.92 | Uncertainty=0.08",
+        "data": {
+          "risk_score": 0.95,
+          "confidence_score": 0.92,
+          "uncertainty_score": 0.08,
+          "additional_evidence_required": false
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "REQUEST_ADDITIONAL_EVIDENCE",
+        "description": "Uncertainty exceeds threshold. Dispatching Step-Up Authentication challenge via TigerGraph action vertex.",
+        "data": null
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "RECEIVE_RESULT",
+        "description": "Step-up authentication result: FAILED",
+        "data": {
+          "outcome": "FAILED"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "REASSESS_RISK",
+        "description": "Post step-up \u2014 Risk=0.95 | Confidence=0.92",
+        "data": {
+          "risk_score": 0.95,
+          "confidence_score": 0.92
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "DETERMINE_NEXT_BEST_ACTION",
+        "description": "Recommended Next Best Action: BLOCK_TRANSACTION",
+        "data": {
+          "action": "BLOCK_TRANSACTION"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "CHECK_POLICY_PERMISSION",
+        "description": "Policy check complete. Approval tier: AUTOMATED_EXECUTION",
+        "data": {
+          "approval_tier": "AUTOMATED_EXECUTION"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "EXECUTE_ACTION",
+        "description": "Executed action: BLOCK_TRANSACTION",
+        "data": {
+          "action_type": "BLOCK_TRANSACTION",
+          "executed_by": "FraudGraph_Autonomous_Agent",
+          "approval_tier": "AUTOMATED_EXECUTION"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "EXPLAIN_DECISION",
+        "description": "Generated 8-question structured explainability rationale (XAI matrix).",
+        "data": null
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "UPDATE_CASE_MEMORY",
+        "description": "Persisted case outcome (BLOCKED) into TigerGraph FraudCase vertex & case memory.",
+        "data": {
+          "case_id": "CASE-HHG-011",
+          "outcome": "BLOCKED"
+        }
+      },
+      {
+        "timestamp": "2026-09-25T07:00:00Z",
+        "step": "CLOSE_OR_ESCALATE",
+        "description": "Case investigation concluded with outcome: BLOCKED.",
+        "data": null
+      }
+    ]
+  },
+  "Evidence": [
+    {
+      "evidence_type": "DEVICE_MULTI_ACCOUNTING",
+      "description": "Emulator device shared across 9 customer accounts \u2014 device farming ring",
+      "confidence_weight": 0.96,
+      "polarity": "SUPPORTING",
+      "source_tool": "TigerGraph_GSQL_Query",
+      "discovered_at": "2026-09-25T07:00:00Z"
+    },
+    {
+      "evidence_type": "ANONYMIZED_IP",
+      "description": "TOR exit node 185.220.101.33 \u2014 Germany \u2014 known fraud IP cluster",
+      "confidence_weight": 0.96,
+      "polarity": "SUPPORTING",
+      "source_tool": "TigerGraph_GSQL_Query",
+      "discovered_at": "2026-09-25T07:00:00Z"
+    },
+    {
+      "evidence_type": "HIGH_RISK_MERCHANT",
+      "description": "Gift card merchant \u2014 high-liquidation risk category",
+      "confidence_weight": 0.88,
+      "polarity": "SUPPORTING",
+      "source_tool": "TigerGraph_GSQL_Query",
+      "discovered_at": "2026-09-25T07:00:00Z"
+    },
+    {
+      "evidence_type": "STEP_UP_FAILED",
+      "description": "Authentication failed \u2014 automated bot pattern confirmed",
+      "confidence_weight": 0.9,
+      "polarity": "SUPPORTING",
+      "source_tool": "TigerGraph_GSQL_Query",
+      "discovered_at": "2026-09-25T07:00:00Z"
+    }
+  ],
+  "Findings": "The FraudGraph agent executed a 18-step autonomous investigation against TigerGraph's knowledge graph. GSQL subgraph traversal detected 'Device Farming / Multi-Accounting' with 4 corroborating evidence signals. The anomaly score of 0.91 triggered a step-up authentication challenge, which returned 'FAILED', updating the agent's posterior risk estimate to 0.95 (confidence: 0.92).",
+  "Fraud pattern": "Device Farming / Multi-Accounting",
+  "Risk": 0.95,
+  "Confidence": 0.92,
+  "Uncertainty": 0.08,
+  "Decisions": {
+    "pre_evidence_action": "BLOCK_TRANSACTION",
+    "additional_evidence_dispatched": true,
+    "step_up_result": "FAILED",
+    "final_recommended_action": "BLOCK_TRANSACTION",
+    "status": "RESOLVED"
+  },
+  "Actions": [
+    "BLOCK_TRANSACTION"
+  ],
+  "Required approval": "AUTOMATED_EXECUTION",
+  "Next Best Action before additional evidence": {
+    "action": "BLOCK_TRANSACTION",
+    "reason": "Initial graph risk score 0.95 with uncertainty 0.08 \u2014 evidence pending",
+    "risk_level": "HIGH"
+  },
+  "Additional evidence requested": "REQUEST_STEP_UP_AUTHENTICATION",
+  "Result of additional evidence": "FAILED",
+  "Updated Next Best Action": {
+    "action": "BLOCK_TRANSACTION",
+    "reason": "Post step-up 'FAILED' \u2014 risk confirmed at 0.95. TigerGraph graph traversal identified 4 evidence signals. Policy 'FRD-001' mandates BLOCK_TRANSACTION for Device Farming / Multi-Accounting.",
+    "action_display": "Block Transaction",
+    "risk_level": "CRITICAL",
+    "required_approval": "AUTOMATED_EXECUTION"
+  },
+  "Final outcome": "BLOCKED",
+  "Case memory entry": {
+    "case_id": "CASE-HHG-011",
+    "transaction_id": "TXN-HHG-011",
+    "fraud_pattern": "Device Farming / Multi-Accounting",
+    "final_risk_score": 0.95,
+    "confidence_score": 0.92,
+    "uncertainty_score": 0.08,
+    "resolution": "RESOLVED",
+    "stored_in": "TigerGraph FraudCase Vertex + Case Memory Vector Store"
+  },
+  "Explainability": {
+    "what_triggered_the_investigation": "Multiple Emulated Devices Sharing Single IP Address",
+    "what_did_the_agent_find": "TigerGraph GSQL graph traversal detected 'Device Farming / Multi-Accounting' \u2014 4 evidence signals corroborate fraud with risk score 0.95.",
+    "why_was_additional_evidence_requested": "Initial uncertainty (0.08) exceeded the 0.10 defensibility threshold \u2014 agent dispatched step-up authentication to reduce uncertainty.",
+    "how_did_the_additional_evidence_change_assessment": "Step-up result 'FAILED' increased posterior risk to 0.95 and confirmed fraud.",
+    "what_action_was_recommended": "BLOCK_TRANSACTION",
+    "why_was_this_action_chosen": "Policy 'FRD-001' (Device Farming Block Policy) mandates BLOCK_TRANSACTION when risk \u2265 threshold and step-up returns 'FAILED'.",
+    "what_approval_was_required": "AUTOMATED_EXECUTION",
+    "what_is_the_business_impact": "Prevented estimated $11700 in fraud losses and potential regulatory fines."
+  }
+}
